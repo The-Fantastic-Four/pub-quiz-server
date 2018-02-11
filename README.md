@@ -1,1 +1,2 @@
+<<<<<<< HEAD
 "# pub-quiz-server" 
