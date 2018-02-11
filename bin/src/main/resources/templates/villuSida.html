@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}"></html>
+
+<html lang="en">
+
+<head>
+    <title>Villa í slóðinni </title>
+</head>
+<body>
+
+<h1>Þú hefur slegið inn ranga slóð</h1>
+<div>
+    <h3 th:text="|HTTP ${attrs.status} ${attrs.error}|"></h3>
+    <p th:text="${attrs.message}"></p>
+</div>
+
+</body>
+
+</html>
