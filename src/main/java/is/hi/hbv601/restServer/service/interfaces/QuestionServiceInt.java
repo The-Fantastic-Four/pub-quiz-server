@@ -10,6 +10,7 @@ package is.hi.hbv601.restServer.service.interfaces;
 
 import is.hi.hbv601.restServer.model.FetchQuestionWrapper;
 import is.hi.hbv601.restServer.model.Question;
+import is.hi.hbv601.restServer.model.Quiz;
 
 public interface QuestionServiceInt {
 	/**
@@ -19,4 +20,10 @@ public interface QuestionServiceInt {
 	 * @return The question relevant to the data.
 	 */
 	public Question getQuestionFromQuiz(FetchQuestionWrapper w);
+	
+	/**
+	 * Add a new question to the database
+	 * @param q the question to be added
+	 */
+	public void addQuestion(Question q);
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+	<head>
+	    <title>Quizzes</title>
+	</head>
+	
+	<body>
+		<h1>New Quiz</h1>
+		<form action="#" th:action="@{/quiz/new}" th:object="${quiz}" method="post">
+			<input type="hidden" th:field="*{id}" />
+			<div>
+				<label for="roomName">Skráningarheiti</label>
+				<input type="text" th:field="*{roomName}" />
+			</div>
+			<div>
+				<label for="startTime">Upphafstími</label>
+				<input type="datetime-local" th:field="*{startTime}" />
+			</div>
+			<div>
+				<label for="duration">Tímalengd</label>
+				<input type="number" th:field="*{duration}" />
+			</div>
+			<div>
+				<input type="submit" value="Vista" />
+			</div>
+		</form>
+	</body>
+</html>
