@@ -3,11 +3,11 @@
  * @author Viktor Alex Brynjarsson
  * @date 13. feb. 2017
  */
-package is.hi.hbv601.restServer.repository;
+package is.hi.hbv601.pubquiz.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import is.hi.hbv601.restServer.model.Question;
+import is.hi.hbv601.pubquiz.model.Question;
 
 public interface QuestionRepository
 	extends JpaRepository<Question, Long>

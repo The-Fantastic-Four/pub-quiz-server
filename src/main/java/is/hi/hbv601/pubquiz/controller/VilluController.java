@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package is.hi.hbv601.restServer.controller;
+package is.hi.hbv601.pubquiz.controller;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;

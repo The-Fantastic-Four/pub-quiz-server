@@ -4,7 +4,7 @@
  * @author Viktor Alex Brynjarsson vab18@hi.is
  * @date 13. feb. 2018
  */
-package is.hi.hbv601.restServer.controller;
+package is.hi.hbv601.pubquiz.controller;
 
 import javax.validation.Valid;
 
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import is.hi.hbv601.restServer.model.Question;
-import is.hi.hbv601.restServer.model.Quiz;
-import is.hi.hbv601.restServer.repository.QuestionRepository;
-import is.hi.hbv601.restServer.service.QuestionService;
-import is.hi.hbv601.restServer.service.QuizService;
+import is.hi.hbv601.pubquiz.model.Question;
+import is.hi.hbv601.pubquiz.model.Quiz;
+import is.hi.hbv601.pubquiz.repository.QuestionRepository;
+import is.hi.hbv601.pubquiz.service.QuestionService;
+import is.hi.hbv601.pubquiz.service.QuizService;
 
 @Controller
 @RequestMapping("/quiz")

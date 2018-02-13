@@ -5,7 +5,7 @@
  * @date 10. feb. 2018
  */
 
-package is.hi.hbv601.restServer.model;
+package is.hi.hbv601.pubquiz.model;
 
 public class Team {
 	private long id;

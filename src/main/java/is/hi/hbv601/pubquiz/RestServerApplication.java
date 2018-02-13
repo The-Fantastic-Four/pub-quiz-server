@@ -4,7 +4,7 @@
  * @author Eiður Örn Gunnarsson eog26@hi.is
  * @date 10. feb. 2018
  */
-package is.hi.hbv601.restServer;
+package is.hi.hbv601.pubquiz;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

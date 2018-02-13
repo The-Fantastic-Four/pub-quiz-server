@@ -5,15 +5,15 @@
  * @date 10. feb. 2018
  */
 
-package is.hi.hbv601.restServer.service;
+package is.hi.hbv601.pubquiz.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import is.hi.hbv601.restServer.model.FetchQuestionWrapper;
-import is.hi.hbv601.restServer.model.Question;
-import is.hi.hbv601.restServer.repository.QuestionRepository;
-import is.hi.hbv601.restServer.service.interfaces.QuestionServiceInt;
+import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
+import is.hi.hbv601.pubquiz.model.Question;
+import is.hi.hbv601.pubquiz.repository.QuestionRepository;
+import is.hi.hbv601.pubquiz.service.interfaces.QuestionServiceInt;
 
 @Service
 public class QuestionService implements QuestionServiceInt{

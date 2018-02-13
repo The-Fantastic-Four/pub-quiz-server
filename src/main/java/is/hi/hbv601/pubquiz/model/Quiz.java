@@ -4,7 +4,7 @@
  * @author Viktor Alex Brynjarsson vab18@hi.is
  * @date 13. feb. 2018
  */
-package is.hi.hbv601.restServer.model;
+package is.hi.hbv601.pubquiz.model;
 
 import java.util.Date;
 import java.util.List;

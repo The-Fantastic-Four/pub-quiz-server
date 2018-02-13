@@ -3,16 +3,16 @@
  * @author Viktor Alex Brynjarsson vab18@hi.is
  * @date 13. feb. 2017
  */
-package is.hi.hbv601.restServer.service;
+package is.hi.hbv601.pubquiz.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import is.hi.hbv601.restServer.model.Quiz;
-import is.hi.hbv601.restServer.repository.QuizRepository;
-import is.hi.hbv601.restServer.service.interfaces.QuizServiceInt;
+import is.hi.hbv601.pubquiz.model.Quiz;
+import is.hi.hbv601.pubquiz.repository.QuizRepository;
+import is.hi.hbv601.pubquiz.service.interfaces.QuizServiceInt;
 
 @Service
 public class QuizService implements QuizServiceInt

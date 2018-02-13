@@ -3,11 +3,11 @@
  * @author Viktor Alex Brynjarsson vab18@hi.is
  * @date 13. feb. 2017
  */
-package is.hi.hbv601.restServer.service.interfaces;
+package is.hi.hbv601.pubquiz.service.interfaces;
 
 import java.util.List;
 
-import is.hi.hbv601.restServer.model.Quiz;
+import is.hi.hbv601.pubquiz.model.Quiz;
 
 public interface QuizServiceInt
 {

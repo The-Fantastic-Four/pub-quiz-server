@@ -6,11 +6,11 @@
  * @date 10. feb. 2018
  */
 
-package is.hi.hbv601.restServer.service.interfaces;
+package is.hi.hbv601.pubquiz.service.interfaces;
 
-import is.hi.hbv601.restServer.model.FetchQuestionWrapper;
-import is.hi.hbv601.restServer.model.Question;
-import is.hi.hbv601.restServer.model.Quiz;
+import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
+import is.hi.hbv601.pubquiz.model.Question;
+import is.hi.hbv601.pubquiz.model.Quiz;
 
 public interface QuestionServiceInt {
 	/**
