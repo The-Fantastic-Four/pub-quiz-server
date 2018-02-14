@@ -58,6 +58,10 @@ public class QuestionService implements QuestionServiceInt{
 		return q;
 	}
 
+	/**
+	 * Add question to the repository
+	 * @param q The question to be added
+	 */
 	@Override
 	public void addQuestion(Question q)
 	{

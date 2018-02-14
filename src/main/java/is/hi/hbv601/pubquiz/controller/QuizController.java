@@ -34,6 +34,11 @@ public class QuizController
 	@Autowired
 	QuestionService questionService;
 	
+	/**
+	 * Show a list of quizzes
+	 * @param model 
+	 * @return the list of quizzes view
+	 */
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView listQuizzes(Model model) {
     	model.addAttribute("quizzes", quizService.allQuizzes());
@@ -41,6 +46,13 @@ public class QuizController
     	return new ModelAndView("quiz/index");
     }
 	
+    /**
+     * Save a new quiz
+     * @param quiz the quiz to be saved
+     * @param errors errors from the model validation
+     * @param model
+     * @return list of quizzes if successful otherwise show the form again
+     */
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     public ModelAndView saveQuiz(
     		@Valid @ModelAttribute("quiz") Quiz quiz, 
@@ -57,6 +69,11 @@ public class QuizController
     	return new ModelAndView("quiz/form");
     }
 
+    /**
+     * Show the form for creating new quizzes
+     * @param model
+     * @return form for creating new quizzes
+     */
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public ModelAndView newQuiz(Model model) {
     	model.addAttribute("quiz", new Quiz());
@@ -64,6 +81,12 @@ public class QuizController
     	return new ModelAndView("quiz/form");
     }
 
+    /**
+     * Delete a quiz
+     * @param quizId the id of the quiz to be deleted
+     * @param model
+     * @return list of quizzes
+     */
     @RequestMapping(value = "/{quizId}", method = RequestMethod.DELETE)
     public ModelAndView deleteQuiz(
     		@PathVariable(value = "quizId") long quizId,
@@ -74,6 +97,12 @@ public class QuizController
     	return new ModelAndView("redirect:/quiz");
     }
 
+    /**
+     * Add an empty question to a quiz
+     * @param quizId id of the quiz to which the question should be added
+     * @param model
+     * @return list of quizzes
+     */
     @RequestMapping(value = "/{quizId}/addQuestion", method = RequestMethod.POST)
     public ModelAndView quizAddQuestion(
     		@PathVariable(value = "quizId") long quizId,

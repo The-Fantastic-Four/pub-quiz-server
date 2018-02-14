@@ -15,13 +15,31 @@ import is.hi.hbv601.pubquiz.model.Quiz;
 public interface QuizRepository
 	extends JpaRepository<Quiz, Long>
 {
+	/**
+	 * Find all quizzes in the repository
+	 * @return a list of quizzes
+	 */
 	List<Quiz> findAll();
 	
+	/**
+	 * Find a quiz by id
+	 * @param id the id of the quiz to be found
+	 * @return the quiz that was found
+	 */
 	Quiz findOne(Long id);
 	
+	/**
+	 * Save quiz to the repository
+	 * @param q the quiz to be saved
+	 */
 	@SuppressWarnings("unchecked")
 	Quiz save(Quiz q);
 
+	/**
+	 * Delete a quiz from the repository
+	 * @param id the id of the quiz to be deleted
+	 * @return id of the quiz that was deleted
+	 */
 	@Transactional
 	Long deleteById(Long id);
 }

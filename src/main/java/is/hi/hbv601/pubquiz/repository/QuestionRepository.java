@@ -12,6 +12,10 @@ import is.hi.hbv601.pubquiz.model.Question;
 public interface QuestionRepository
 	extends JpaRepository<Question, Long>
 {
+	/**
+	 * Save a question to the repository
+	 * @param q The question to be saved
+	 */
 	@SuppressWarnings("unchecked")
 	Question save(Question q);
 }

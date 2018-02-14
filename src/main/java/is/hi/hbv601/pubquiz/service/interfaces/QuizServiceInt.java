@@ -20,7 +20,7 @@ public interface QuizServiceInt
 	/**
 	 * Finds quiz by it's id
 	 * @param id id of the quiz to be found
-	 * @return
+	 * @return the quiz that was found
 	 */
 	public Quiz findQuiz(long id);
 	

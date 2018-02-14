@@ -20,24 +20,41 @@ public class QuizService implements QuizServiceInt
 	@Autowired
 	QuizRepository quizRepository;
 
+	/**
+	 * Get a list of quizzes
+	 * @return list of quizzes
+	 */
 	@Override
 	public List<Quiz> allQuizzes()
 	{
 		return quizRepository.findAll();
 	}
 
+	/**
+	 * Find a quiz by id
+	 * @param id the id of the quiz to be found
+	 * @return the quiz with the given id
+	 */
 	@Override
 	public Quiz findQuiz(long id)
 	{
 		return quizRepository.findOne(id);
 	}
 
+	/**
+	 * Add a new quiz
+	 * @param q the quiz to be added
+	 */
 	@Override
 	public void addQuiz(Quiz q)
 	{
 		quizRepository.save(q);
 	}
 
+	/**
+	 * Delete quiz
+	 * @param id the id of the quiz to be delted
+	 */
 	@Override
 	public void deleteQuiz(long id)
 	{
