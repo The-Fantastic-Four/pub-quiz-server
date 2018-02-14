@@ -44,6 +44,7 @@ public class RESTResponseController {
      */
     @RequestMapping(value = "/answer", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody ResponseEntity<HttpStatus> saveAnswer(@RequestBody Answer jsonString) {
+    	System.out.println(jsonString);
         return answerService.checkData(jsonString);
     }
     
@@ -55,6 +56,7 @@ public class RESTResponseController {
      */
     @RequestMapping(value = "/question", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody Question fetchQuestion(@RequestBody FetchQuestionWrapper jsonString) {
+    	System.out.println(jsonString);
         return questionService.getQuestionFromQuiz(jsonString);
     }
     
@@ -66,6 +68,7 @@ public class RESTResponseController {
      */
     @RequestMapping(value = "/register_team", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody ResponseEntity<?> registerTeam(@RequestBody Team jsonString) {
+    	System.out.println(jsonString);
         return teamService.registerTeam(jsonString);
     }
     
