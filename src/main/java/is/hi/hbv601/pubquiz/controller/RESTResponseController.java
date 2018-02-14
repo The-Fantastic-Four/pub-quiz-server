@@ -5,7 +5,7 @@
  * @date 11. feb. 2018
  */
 
-package is.hi.hbv601.restServer.controller;
+package is.hi.hbv601.pubquiz.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import is.hi.hbv601.restServer.model.Answer;
-import is.hi.hbv601.restServer.model.FetchQuestionWrapper;
-import is.hi.hbv601.restServer.model.Question;
-import is.hi.hbv601.restServer.model.Team;
-import is.hi.hbv601.restServer.service.interfaces.AnswerServiceInt;
-import is.hi.hbv601.restServer.service.interfaces.QuestionServiceInt;
-import is.hi.hbv601.restServer.service.interfaces.TeamServiceInt;
+import is.hi.hbv601.pubquiz.model.Answer;
+import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
+import is.hi.hbv601.pubquiz.model.Question;
+import is.hi.hbv601.pubquiz.model.Team;
+import is.hi.hbv601.pubquiz.service.interfaces.AnswerServiceInt;
+import is.hi.hbv601.pubquiz.service.interfaces.QuestionServiceInt;
+import is.hi.hbv601.pubquiz.service.interfaces.TeamServiceInt;
 
 @RestController
 public class RESTResponseController {
@@ -44,6 +44,7 @@ public class RESTResponseController {
      */
     @RequestMapping(value = "/answer", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody ResponseEntity<HttpStatus> saveAnswer(@RequestBody Answer jsonString) {
+    	System.out.println(jsonString);
         return answerService.checkData(jsonString);
     }
     
@@ -55,6 +56,7 @@ public class RESTResponseController {
      */
     @RequestMapping(value = "/question", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody Question fetchQuestion(@RequestBody FetchQuestionWrapper jsonString) {
+    	System.out.println(jsonString);
         return questionService.getQuestionFromQuiz(jsonString);
     }
     
@@ -66,6 +68,7 @@ public class RESTResponseController {
      */
     @RequestMapping(value = "/register_team", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody ResponseEntity<?> registerTeam(@RequestBody Team jsonString) {
+    	System.out.println(jsonString);
         return teamService.registerTeam(jsonString);
     }
     

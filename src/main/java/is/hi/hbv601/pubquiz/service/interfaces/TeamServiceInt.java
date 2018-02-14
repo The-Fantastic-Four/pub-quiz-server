@@ -6,11 +6,11 @@
  * @date 11. feb. 2018
  */
 
-package is.hi.hbv601.restServer.service.interfaces;
+package is.hi.hbv601.pubquiz.service.interfaces;
 
 import org.springframework.http.ResponseEntity;
 
-import is.hi.hbv601.restServer.model.Team;
+import is.hi.hbv601.pubquiz.model.Team;
 
 public interface TeamServiceInt {
 	

@@ -5,16 +5,22 @@
  * @date 10. feb. 2018
  */
 
-package is.hi.hbv601.restServer.service;
+package is.hi.hbv601.pubquiz.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import is.hi.hbv601.restServer.model.FetchQuestionWrapper;
-import is.hi.hbv601.restServer.model.Question;
-import is.hi.hbv601.restServer.service.interfaces.QuestionServiceInt;
+import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
+import is.hi.hbv601.pubquiz.model.Question;
+import is.hi.hbv601.pubquiz.repository.QuestionRepository;
+import is.hi.hbv601.pubquiz.service.interfaces.QuestionServiceInt;
 
 @Service
 public class QuestionService implements QuestionServiceInt{
+	
+	@Autowired
+	QuestionRepository questionRepository;
+	
 	public Question getQuestionFromQuiz(FetchQuestionWrapper w) {
 		boolean valid = checkData(w);
 		if(valid) {
@@ -50,5 +56,15 @@ public class QuestionService implements QuestionServiceInt{
 		System.out.println("Returning Question");
 		System.out.println("====================");
 		return q;
+	}
+
+	/**
+	 * Add question to the repository
+	 * @param q The question to be added
+	 */
+	@Override
+	public void addQuestion(Question q)
+	{
+		questionRepository.save(q);
 	}
 }

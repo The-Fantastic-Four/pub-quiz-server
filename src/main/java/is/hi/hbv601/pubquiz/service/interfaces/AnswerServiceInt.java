@@ -5,12 +5,12 @@
  * @author Eiður Örn Gunnarsson eog26@hi.is
  * @date 10. feb. 2018
  */
-package is.hi.hbv601.restServer.service.interfaces;
+package is.hi.hbv601.pubquiz.service.interfaces;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import is.hi.hbv601.restServer.model.Answer;
+import is.hi.hbv601.pubquiz.model.Answer;
 
 public interface AnswerServiceInt {
 	

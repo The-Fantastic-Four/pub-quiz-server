@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+	<head>
+	    <title>Quizzes</title>
+	</head>
+	
+	<body>
+		<h1>Quizzes</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Auðkenni</th>
+					<th>Skráningarheiti</th>
+					<th>Upphafstími</th>
+					<th>Tímalengd</th>
+					<th>Fjöldi spurninga</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="quiz: ${quizzes}">
+					<td th:text="${quiz.id}">0</td>
+					<td th:text="${quiz.roomName}">a_generic_quiz</td>
+					<td th:text="${quiz.startTime}">2004</td>
+					<td th:text="${quiz.duration}">24</td>
+					<td th:text="${#lists.size(quiz.questions)}">0</td>
+					<td>
+						<form action="#" th:action="@{'/quiz/' + ${quiz.id} + '/addQuestion'}" th:method="post">
+							<button type="submit">bæta við spurningu</button>
+						</form>
+					</td>
+					<td>
+						<form action="#" th:action="@{'/quiz/' + ${quiz.id}}" th:method="delete">
+							<button type="submit">eyða</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<a href="/quiz/new">New</a>
+	</body>
+</html>

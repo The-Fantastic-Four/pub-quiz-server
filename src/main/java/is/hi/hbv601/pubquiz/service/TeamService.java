@@ -5,7 +5,7 @@
  * @date 11. feb. 2018
  */
 
-package is.hi.hbv601.restServer.service;
+package is.hi.hbv601.pubquiz.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import is.hi.hbv601.restServer.model.NewTeamReturn;
-import is.hi.hbv601.restServer.model.Team;
-import is.hi.hbv601.restServer.service.interfaces.TeamServiceInt;
+import is.hi.hbv601.pubquiz.model.NewTeamReturn;
+import is.hi.hbv601.pubquiz.model.Team;
+import is.hi.hbv601.pubquiz.service.interfaces.TeamServiceInt;
 
 @Service
 public class TeamService implements TeamServiceInt{

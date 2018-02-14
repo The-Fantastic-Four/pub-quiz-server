@@ -5,14 +5,14 @@
  * @date 10. feb. 2018
  */
 
-package is.hi.hbv601.restServer.service;
+package is.hi.hbv601.pubquiz.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import is.hi.hbv601.restServer.model.Answer;
-import is.hi.hbv601.restServer.service.interfaces.AnswerServiceInt;
+import is.hi.hbv601.pubquiz.model.Answer;
+import is.hi.hbv601.pubquiz.service.interfaces.AnswerServiceInt;
 
 @Service
 public class AnswerService implements AnswerServiceInt{
