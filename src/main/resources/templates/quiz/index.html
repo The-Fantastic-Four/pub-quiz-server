@@ -16,29 +16,23 @@
 					<th>Tímalengd</th>
 					<th>Fjöldi spurninga</th>
 					<th></th>
-					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="quiz: ${quizzes}">
-					<td th:text="${quiz.id}">0</td>
+					<td><a th:text="${quiz.id}" th:href="@{'/quiz/' + ${quiz.id}}">0</a></td>
 					<td th:text="${quiz.roomName}">a_generic_quiz</td>
 					<td th:text="${quiz.startTime}">2004</td>
 					<td th:text="${quiz.duration}">24</td>
 					<td th:text="${#lists.size(quiz.questions)}">0</td>
 					<td>
-						<form action="#" th:action="@{'/quiz/' + ${quiz.id} + '/addQuestion'}" th:method="post">
-							<button type="submit">bæta við spurningu</button>
-						</form>
-					</td>
-					<td>
 						<form action="#" th:action="@{'/quiz/' + ${quiz.id}}" th:method="delete">
-							<button type="submit">eyða</button>
+							<button type="submit">Eyða</button>
 						</form>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<a href="/quiz/new">New</a>
+		<a href="/quiz/new">Nýtt quiz</a>
 	</body>
 </html>

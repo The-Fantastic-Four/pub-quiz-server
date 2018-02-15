@@ -82,6 +82,25 @@ public class QuizController
     }
 
     /**
+     * View a quiz
+     * @param quizId the id of the quiz to be viewed
+     * @param model
+     * @return the quiz
+     */
+    @RequestMapping(value = "/{quizId}", method = RequestMethod.GET)
+    public ModelAndView showQuiz(
+    		@PathVariable(value = "quizId") long quizId,
+    		Model model) {
+
+    	model.addAttribute("quiz", quizService.findQuiz(quizId));
+    	
+    	Quiz q = quizService.findQuiz(quizId);
+    	System.out.println("Number of questions: " + q.getQuestions().size());
+    	
+    	return new ModelAndView("quiz/show");
+    }
+
+    /**
      * Delete a quiz
      * @param quizId the id of the quiz to be deleted
      * @param model
@@ -98,6 +117,28 @@ public class QuizController
     }
 
     /**
+     * Show form for adding a new question
+     * @param quizId id of the quiz to which the question should be added
+     * @param model
+     * @return add question form
+     */
+    @RequestMapping(value = "/{quizId}/addQuestion", method = RequestMethod.GET)
+    public ModelAndView quizAddQuestionForm(
+    		@PathVariable(value = "quizId") long quizId,
+    		Model model) {
+    	
+    	Quiz quiz = quizService.findQuiz(quizId);
+    	
+    	Question q = new Question();
+    	q.setQuiz(quiz);
+    	
+    	model.addAttribute("newQuestion", q);
+    	model.addAttribute("quiz", quiz);
+
+    	return new ModelAndView("question/form");
+    }
+
+    /**
      * Add an empty question to a quiz
      * @param quizId id of the quiz to which the question should be added
      * @param model
@@ -106,18 +147,36 @@ public class QuizController
     @RequestMapping(value = "/{quizId}/addQuestion", method = RequestMethod.POST)
     public ModelAndView quizAddQuestion(
     		@PathVariable(value = "quizId") long quizId,
+    		@Valid @ModelAttribute("newQuestion") Question question, 
+    		BindingResult errors,
     		Model model) {
     	
-    	Quiz quiz = quizService.findQuiz(quizId);
-    	
-    	Question q = new Question();
-    	q.setQuestion("How much wood could a woodchuck chuck if a wood chuck could chuck wood?");
-    	q.setQuestion_number(0);
-    	q.setQuestion_type("text");
-    	q.setQuiz(quiz);
-    	
-    	questionService.addQuestion(q);
+    	if (!errors.hasErrors())
+    	{
+        	questionService.addQuestion(question);
+        	
+        	return new ModelAndView("redirect:/quiz/" + quizId);
+    	}
 
-    	return new ModelAndView("redirect:/quiz");
+    	return new ModelAndView("question/form");
+    }
+
+    /**
+     * Delete a quiz
+     * @param quizId the id of the quiz to be deleted
+     * @param model
+     * @return list of quizzes
+     */
+    @RequestMapping(value = "/{quizId}/question/{questionId}", method = RequestMethod.DELETE)
+    public ModelAndView deleteQuestion(
+    		@PathVariable(value = "quizId") long quizId,
+    		@PathVariable(value = "questionId") long questionId,
+    		Model model) {
+    	
+    	// TODO: maybe check if question is part of quiz
+    	
+    	questionService.deleteQuestion(questionId);
+    	
+    	return new ModelAndView("redirect:/quiz/" + quizId);
     }
 }
