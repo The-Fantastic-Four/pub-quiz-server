@@ -7,8 +7,6 @@
 
 package is.hi.hbv601.pubquiz.service;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,16 +18,17 @@ import is.hi.hbv601.pubquiz.service.interfaces.TeamServiceInt;
 
 @Service
 public class TeamService implements TeamServiceInt{
-	public ResponseEntity<?> registerTeam(Team t){
+	public String registerTeam(Team t){
+		String jsonString = "";
 		boolean exists = teamExists(t);
 		if(exists) {
-			return new ResponseEntity<HttpStatus>(HttpStatus.FORBIDDEN);
+			return jsonString;
 		}
 		
 		NewTeamReturn registeredTeam = createRegisteredTeam(t);
 		saveData(registeredTeam);
 		
-		String jsonString = "";
+		
 		try {
 			jsonString = convertToJsonString(registeredTeam);
 		} catch (JsonProcessingException e) {
@@ -37,7 +36,7 @@ public class TeamService implements TeamServiceInt{
 			e.printStackTrace();
 		}
 		
-		return new ResponseEntity<String>(jsonString, HttpStatus.CREATED);
+		return jsonString;
 	}
 	
 	/**

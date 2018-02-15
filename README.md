@@ -1,2 +1,1 @@
-<<<<<<< HEAD
-"# pub-quiz-server" 
+"# pub-quiz-server"
