@@ -12,20 +12,21 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import is.hi.hbv601.pubquiz.model.NewTeamReturn;
+import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.model.Team;
+import is.hi.hbv601.pubquiz.model.TeamRegistration;
 import is.hi.hbv601.pubquiz.service.interfaces.TeamServiceInt;
 
 @Service
 public class TeamService implements TeamServiceInt{
-	public String registerTeam(Team t){
+	public String registerTeam(TeamRegistration t){
 		String jsonString = "";
 		boolean exists = teamExists(t);
 		if(exists) {
 			return jsonString;
 		}
 		
-		NewTeamReturn registeredTeam = createRegisteredTeam(t);
+		Team registeredTeam = createRegisteredTeam(t);
 		saveData(registeredTeam);
 		
 		
@@ -45,7 +46,7 @@ public class TeamService implements TeamServiceInt{
 	 * @param t The team to be checked for.
 	 * @return true if team exists; false if team doesn't exist.
 	 */
-	private boolean teamExists(Team t){
+	private boolean teamExists(TeamRegistration t){
 		//TODO: Check if team exists.
 		return false;
 	}
@@ -55,7 +56,7 @@ public class TeamService implements TeamServiceInt{
 	 * 
 	 * @param data The data to be saved.
 	 */
-	private void saveData(NewTeamReturn t) {
+	private void saveData(Team t) {
 		//TODO: Save into database.
 		System.out.println("====================");
 		System.out.println(t.getTeam_name());
@@ -69,9 +70,10 @@ public class TeamService implements TeamServiceInt{
 	 * @param t Team to be registered.
 	 * @return More detailed model for given team.
 	 */
-	private NewTeamReturn createRegisteredTeam(Team t) {
+	private Team createRegisteredTeam(TeamRegistration t) {
 		//TODO: Get required data from database and fill in.
-		return new NewTeamReturn(103, "Tveir á kantinum", 60, "eede877b-7741-4dec-a6a4-3b7d9b06bc5c"); 
+		//return new Team(103, "Tveir á kantinum", 60, "eede877b-7741-4dec-a6a4-3b7d9b06bc5c"); 
+		return new Team(103, "Tveir á kantinum", new Quiz(), "eede877b-7741-4dec-a6a4-3b7d9b06bc5c");
 	}
 	
 	/**
@@ -81,7 +83,7 @@ public class TeamService implements TeamServiceInt{
 	 * @return JSON String that corresponds to given object information.
 	 * @throws JsonProcessingException
 	 */
-	private String convertToJsonString(NewTeamReturn t) throws JsonProcessingException {
+	private String convertToJsonString(Team t) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writeValueAsString(t);
 	}

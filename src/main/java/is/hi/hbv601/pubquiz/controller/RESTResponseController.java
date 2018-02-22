@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.ReceivedAnswer;
-import is.hi.hbv601.pubquiz.model.Team;
+import is.hi.hbv601.pubquiz.model.TeamRegistration;
 import is.hi.hbv601.pubquiz.service.interfaces.AnswerServiceInt;
 import is.hi.hbv601.pubquiz.service.interfaces.QuestionServiceInt;
 import is.hi.hbv601.pubquiz.service.interfaces.TeamServiceInt;
@@ -71,7 +71,7 @@ public class RESTResponseController {
      * @return HTTP status of 201 if successful and a relevant JSON object, 403 if the team already exists.
      */
     @RequestMapping(value = "/api/register_team", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody ResponseEntity<?> registerTeam(@RequestBody Team jsonString) {
+    public @ResponseBody ResponseEntity<?> registerTeam(@RequestBody TeamRegistration jsonString) {
     	System.out.println(jsonString);
     	String resultString = teamService.registerTeam(jsonString);
     	if (resultString.isEmpty()) {

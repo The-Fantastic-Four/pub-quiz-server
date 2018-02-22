@@ -1,43 +1,64 @@
 /**
- * Model object for the Team data.
+ * Model object for the team data that is to be returned.
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
- * @date 10. feb. 2018
+ * @date 11. feb. 2018
  */
 
 package is.hi.hbv601.pubquiz.model;
 
-public class Team {
-	private long id;
-    private String room_name;
-    private String team_name;
-    private String phone_id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-    public Team(long id, String room_name, String team_name, String phone_id) {
-        this.id = id;
-        this.room_name = room_name;
-        this.team_name = team_name;
-        this.phone_id = phone_id;
-    }
-    
-    public Team() {
-    	
-    }
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "team")
+public class Team {
+	@Id
+	@GeneratedValue(generator = "increment")
+	@GenericGenerator(name = "increment", strategy = "increment")
+	private long id;
+
+	@NotNull(message = "Þessi reitur má ekki vera tómur.")
+	private String team_name;
+
+	@ManyToOne
+	@JoinColumn(name = "quiz_id")
+	private Quiz quiz;
+
+	@NotNull(message = "Þessi reitur má ekki vera tómur.")
+	private String phone_id;
+	
+	public Team() {
+	}
+	
+	public Team(long id, String team_name, Quiz quiz, String phone_id) {
+		this.id = id;
+		this.team_name = team_name;
+		this.quiz = quiz;
+		this.phone_id = phone_id;
+	}
 
 	public long getId() {
 		return id;
 	}
 
-	public String getRoom_name() {
-		return room_name;
-	}
-	
 	public String getTeam_name() {
 		return team_name;
 	}
 
+	public Quiz getQuiz() {
+		return quiz;
+	}
+
 	public String getPhone_id() {
 		return phone_id;
-	} 
-    
+	}	
+	
 }
