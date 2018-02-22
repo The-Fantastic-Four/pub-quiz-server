@@ -13,7 +13,7 @@
 	    	console.log("a");
 	    	var xhr = new XMLHttpRequest();
 	    	console.log("b");
-	    	var url = "http://localhost:8080/answer";
+	    	var url = "http://localhost:8080/api/answer";
 	    	xhr.open("POST", url, true);
 	    	xhr.setRequestHeader("Content-type", "application/json");
 	    	/*xhr.onreadystatechange = function () {
@@ -21,14 +21,14 @@
 	    	        var json = JSON.parse(xhr.responseText);
 	    	    }
 	    	};*/
-	    	var data = JSON.stringify({"id":23,"team_id":2,"question_id":5,"answer":"I work."});
+	    	var data = JSON.stringify({"team_id":2,"question_id":5,"answer":"I work."});
 	    	xhr.send(data);
 	    }
 	
 	    function getQuestion() {
 	    	document.getElementById("abc").innerHTML = "Javascript is dead. I say again javascript is dead.";
 	    	xhr = new XMLHttpRequest();
-	    	url = "http://localhost:8080/question";
+	    	url = "http://localhost:8080/api/question";
 	    	xhr.open("POST", url, true);
 	    	xhr.setRequestHeader("Content-type", "application/json");
 	    	data = JSON.stringify({"quiz_id":23,"question_number":2,"phone_id":"eede877b-7741-4dec-a6a4-3b7d9b06bc5c"});
@@ -38,7 +38,7 @@
 	    function registerTeam() {
 	    	document.getElementById("abc").innerHTML = "Javascript's team is on holiday. I say again the team is on holiday.";
 	    	xhr = new XMLHttpRequest();
-	    	url = "http://localhost:8080/register_team";
+	    	url = "http://localhost:8080/api/register_team";
 	    	xhr.open("POST", url, true);
 	    	xhr.setRequestHeader("Content-type", "application/json");
 	    	data = JSON.stringify({"id":49, "room_name":"Waffles","team_name":"Tveir á kantinum","phone_id":"eede877b-7741-4dec-a6a4-3b7d9b06bc5c"});

@@ -7,6 +7,9 @@
 
 package is.hi.hbv601.pubquiz.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +30,7 @@ public class QuestionService implements QuestionServiceInt{
 			return getQuestion(w);
 		}	
 		// TODO: Consider how to handle if the data for fetching the question is not valid.
-		return new Question(0, "This request is not valid", 0, 0, "invalid");
+		return new Question(0, "This request is not valid", 0, 0, "invalid", false);
 	}
 	
 	/**
@@ -50,7 +53,7 @@ public class QuestionService implements QuestionServiceInt{
 	 */
 	private Question getQuestion(FetchQuestionWrapper w) {
 		// TODO: Fetch the question and return it.
-		Question q = new Question(0, "Are pancakes delicious?", 4, 10, "text");
+		Question q = new Question(0, "Are pancakes delicious?", 4, 10, "text",false);
 		System.out.println("====================");
 		System.out.println(q.getQuestion());
 		System.out.println("Returning Question");
@@ -76,5 +79,27 @@ public class QuestionService implements QuestionServiceInt{
 	public void deleteQuestion(long id)
 	{
 		questionRepository.delete(id);
+	}
+	
+	/**
+	 * Fetches the list of all user related private questions.
+	 * @return list of all private questions for appropriate user.
+	 */
+	public List<Question> getPrivateQuestionList()
+	{
+		//TODO: When login system is in place a query can be created and should be called here 
+		//for getting questions for related user.
+		List<Question> l = new ArrayList<Question>();
+		l.add(new Question(40,"Question generated in code for testing purposes",3,5,"text",true));
+    	return l;
+	}
+	
+	/**
+	 * Fetches the list of all publicly available questions
+	 * @return list of all public available questions
+	 */
+	public List<Question> getPublicQuestionList()
+	{
+		return questionRepository.findByIsPrivateFalseOrderByQuestionAsc();
 	}
 }

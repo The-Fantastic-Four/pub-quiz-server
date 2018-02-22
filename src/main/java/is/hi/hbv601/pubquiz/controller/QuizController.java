@@ -6,6 +6,9 @@
  */
 package is.hi.hbv601.pubquiz.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,13 +131,12 @@ public class QuizController
     		Model model) {
     	
     	Quiz quiz = quizService.findQuiz(quizId);
-    	
     	Question q = new Question();
     	q.setQuiz(quiz);
     	
     	model.addAttribute("newQuestion", q);
     	model.addAttribute("quiz", quiz);
-
+    	
     	return new ModelAndView("question/form");
     }
 
@@ -153,6 +155,9 @@ public class QuizController
     	
     	if (!errors.hasErrors())
     	{
+    		System.out.println(question.getQuestion());
+    		System.out.println(question.getId());
+    		System.out.println(question.getIsPrivate());
         	questionService.addQuestion(question);
         	
         	return new ModelAndView("redirect:/quiz/" + quizId);
@@ -161,6 +166,31 @@ public class QuizController
     	return new ModelAndView("question/form");
     }
 
+    /**
+     * Show form for adding a question that has already been created.
+     * @param quizId id of the quiz to which the question should be added
+     * @param model
+     * @return add created question form
+     */
+    @RequestMapping(value = "/{quizId}/addCreatedQuestion", method = RequestMethod.GET)
+    public ModelAndView quizAddCreatedQuestionForm(
+    		@PathVariable(value = "quizId") long quizId,
+    		Model model) {
+    	
+    	Quiz quiz = quizService.findQuiz(quizId);
+    	Question q = new Question();
+    	List<Question> publicQuestionList = questionService.getPublicQuestionList();
+    	List<Question> privateQuestionList = questionService.getPrivateQuestionList();
+    	q.setQuiz(quiz);
+    	
+    	model.addAttribute("newQuestion", q);
+    	model.addAttribute("quiz", quiz);
+    	model.addAttribute("publicList", publicQuestionList);
+    	model.addAttribute("privateList", privateQuestionList);
+    	
+    	return new ModelAndView("question/formForCreatedQuestion");
+    }
+    
     /**
      * Delete a quiz
      * @param quizId the id of the quiz to be deleted
