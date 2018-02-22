@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import is.hi.hbv601.pubquiz.model.Answer;
+import is.hi.hbv601.pubquiz.model.ReceivedAnswer;
 
 public interface AnswerServiceInt {
 	
@@ -18,8 +19,8 @@ public interface AnswerServiceInt {
 	 * Checks whether the data is valid and if so saves it.
 	 * 
 	 * @param data The data to be checked.
-	 * @return HTTP status of 200 if successful, 400 if the data was invalid.
+	 * @return True if successful; false if unsuccessful.
 	 */
-	public ResponseEntity<HttpStatus> checkData(Answer data);
+	public boolean saveAnswer(ReceivedAnswer data);
 
 }

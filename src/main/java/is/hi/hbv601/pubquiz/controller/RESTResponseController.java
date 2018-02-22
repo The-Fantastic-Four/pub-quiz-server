@@ -2,7 +2,7 @@
  * RESTResponseController reacts to JSON requests.
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
- * @date 11. feb. 2018
+ * @date 15. feb. 2018
  */
 
 package is.hi.hbv601.pubquiz.controller;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import is.hi.hbv601.pubquiz.model.Answer;
 import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
 import is.hi.hbv601.pubquiz.model.Question;
+import is.hi.hbv601.pubquiz.model.ReceivedAnswer;
 import is.hi.hbv601.pubquiz.model.Team;
 import is.hi.hbv601.pubquiz.service.interfaces.AnswerServiceInt;
 import is.hi.hbv601.pubquiz.service.interfaces.QuestionServiceInt;
@@ -42,10 +42,14 @@ public class RESTResponseController {
      * @param jsonString The JSON string received.
      * @return HTTP status of 200 if successful, 400 if the request was invalid.
      */
-    @RequestMapping(value = "/answer", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody ResponseEntity<HttpStatus> saveAnswer(@RequestBody Answer jsonString) {
+    @RequestMapping(value = "/api/answer", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody ResponseEntity<HttpStatus> saveAnswer(@RequestBody ReceivedAnswer jsonString) {
     	System.out.println(jsonString);
-        return answerService.checkData(jsonString);
+        boolean result = answerService.saveAnswer(jsonString);
+        if(result) {
+        	new ResponseEntity<>(HttpStatus.OK);
+        }
+    	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     
     /**
@@ -54,7 +58,7 @@ public class RESTResponseController {
      * @param jsonString The JSON string received.
      * @return Question related to data given.
      */
-    @RequestMapping(value = "/question", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/api/question", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody Question fetchQuestion(@RequestBody FetchQuestionWrapper jsonString) {
     	System.out.println(jsonString);
         return questionService.getQuestionFromQuiz(jsonString);
@@ -66,10 +70,14 @@ public class RESTResponseController {
      * @param jsonString The JSON string received.
      * @return HTTP status of 201 if successful and a relevant JSON object, 403 if the team already exists.
      */
-    @RequestMapping(value = "/register_team", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/api/register_team", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody ResponseEntity<?> registerTeam(@RequestBody Team jsonString) {
     	System.out.println(jsonString);
-        return teamService.registerTeam(jsonString);
+    	String resultString = teamService.registerTeam(jsonString);
+    	if (resultString.isEmpty()) {
+    		return new ResponseEntity<HttpStatus>(HttpStatus.FORBIDDEN);
+		}
+    	return new ResponseEntity<String>(resultString, HttpStatus.CREATED);
     }
     
 }

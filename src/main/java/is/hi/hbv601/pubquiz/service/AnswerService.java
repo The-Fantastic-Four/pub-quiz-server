@@ -2,28 +2,26 @@
  * AnswerSerivce is an implementation of the AnswerServiceInt
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
- * @date 10. feb. 2018
+ * @date 15. feb. 2018
  */
 
 package is.hi.hbv601.pubquiz.service;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import is.hi.hbv601.pubquiz.model.Answer;
+import is.hi.hbv601.pubquiz.model.ReceivedAnswer;
 import is.hi.hbv601.pubquiz.service.interfaces.AnswerServiceInt;
 
 @Service
 public class AnswerService implements AnswerServiceInt{
-	public ResponseEntity<HttpStatus> checkData(Answer data) {
+	public boolean saveAnswer(ReceivedAnswer data) {
 		boolean valid = true;
 		//TODO: Check if the JSON string is correct. 
 		if(valid) {
 			saveData(data);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return true;
 		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		return false;
 	}
 	
 	/**
@@ -31,7 +29,7 @@ public class AnswerService implements AnswerServiceInt{
 	 * 
 	 * @param data The data to be saved.
 	 */
-	private void saveData(Answer data) {
+	private void saveData(ReceivedAnswer data) {
 		//TODO: Save into database.
 		System.out.println("====================");
 		System.out.println(data.getAnswer());

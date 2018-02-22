@@ -8,8 +8,6 @@
 
 package is.hi.hbv601.pubquiz.service.interfaces;
 
-import org.springframework.http.ResponseEntity;
-
 import is.hi.hbv601.pubquiz.model.Team;
 
 public interface TeamServiceInt {
@@ -18,8 +16,7 @@ public interface TeamServiceInt {
 	 * Checks whether the team exists already, if it doesn't it registers the team.
 	 * 
 	 * @param t The team to register.
-	 * @return HTTP status of 201 if successful and a relevant JSON object; HTTP status 
-	 * 403 if the team already exists.
+	 * @return Relevant JSON string if successful; Empty JSON string if it fails.
 	 */
-	public ResponseEntity<?> registerTeam(Team t);
+	public String registerTeam(Team t);
 }
