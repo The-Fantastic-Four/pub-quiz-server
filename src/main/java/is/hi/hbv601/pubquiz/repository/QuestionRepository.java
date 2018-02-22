@@ -42,4 +42,11 @@ public interface QuestionRepository
 	 * @return List of all questions that contain the search string within.
 	 */
 	List<Question> findByQuestionContainingIgnoreCaseAndIsPrivateFalse(String question);
+	
+	/**
+	 * Searches if the exact same question exists.
+	 * @param question The question that is being searched for.
+	 * @return The same question if it exists.
+	 */
+	long countByQuestion(String question);
 }

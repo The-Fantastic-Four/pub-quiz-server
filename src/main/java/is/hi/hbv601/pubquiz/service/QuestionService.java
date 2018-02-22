@@ -10,6 +10,8 @@ package is.hi.hbv601.pubquiz.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hamcrest.collection.IsEmptyCollection;
+import org.hamcrest.core.IsNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -101,5 +103,16 @@ public class QuestionService implements QuestionServiceInt{
 	public List<Question> getPublicQuestionList()
 	{
 		return questionRepository.findByIsPrivateFalseOrderByQuestionAsc();
+	}
+	
+	/**
+	 * Finds out whether the question that is given exists already or not.
+	 * 
+	 * @param question The question that is meant to be checked for.
+	 * @return true if question exists; False if it doesn't.
+	 */
+	public boolean doesQuestionExist(Question question)
+	{
+		return questionRepository.countByQuestion(question.getQuestion()) >= 1;
 	}
 }
