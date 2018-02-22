@@ -53,7 +53,7 @@ public class QuizService implements QuizServiceInt
 
 	/**
 	 * Delete quiz
-	 * @param id the id of the quiz to be delted
+	 * @param id the id of the quiz to be deleted
 	 */
 	@Override
 	public void deleteQuiz(long id)

@@ -6,6 +6,7 @@
 package is.hi.hbv601.pubquiz.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import is.hi.hbv601.pubquiz.model.Question;
 
@@ -18,4 +19,12 @@ public interface QuestionRepository
 	 */
 	@SuppressWarnings("unchecked")
 	Question save(Question q);
+
+	/**
+	 * Delete a question from the repository
+	 * @param id the id of the question to be deleted
+	 * @return id of the question that was deleted
+	 */
+	@Transactional
+	Long deleteById(Long id);
 }

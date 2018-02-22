@@ -67,4 +67,14 @@ public class QuestionService implements QuestionServiceInt{
 	{
 		questionRepository.save(q);
 	}
+
+	/**
+	 * Delete question
+	 * @param id the id of the quiz to be deleted
+	 */
+	@Override
+	public void deleteQuestion(long id)
+	{
+		questionRepository.delete(id);
+	}
 }

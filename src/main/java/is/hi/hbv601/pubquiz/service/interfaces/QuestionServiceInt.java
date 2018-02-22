@@ -26,4 +26,10 @@ public interface QuestionServiceInt {
 	 * @param q the question to be added
 	 */
 	public void addQuestion(Question q);
+	
+	/**
+	 * Delete question from database
+	 * @param id id of the question to be deleted
+	 */
+	public void deleteQuestion(long id);
 }
