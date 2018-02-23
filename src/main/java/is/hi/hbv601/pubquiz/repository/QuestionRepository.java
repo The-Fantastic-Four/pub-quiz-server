@@ -13,6 +13,8 @@ import is.hi.hbv601.pubquiz.model.Question;
 public interface QuestionRepository
 	extends JpaRepository<Question, Long>
 {
+	Question findByQuizIdAndQuestionNumber(long id, long questionNumber);
+	
 	/**
 	 * Save a question to the repository
 	 * @param q The question to be saved

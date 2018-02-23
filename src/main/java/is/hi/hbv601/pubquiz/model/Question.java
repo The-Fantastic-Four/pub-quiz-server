@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "question")
 public class Question {
@@ -32,12 +34,13 @@ public class Question {
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
     private String question;
 
-    private long question_number;
+    private long questionNumber;
 
-    private long total_questions;
+    private long totalQuestions;
 
-    private String question_type;
+    private String questionType;
 
+    @JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "quiz_id")
 	private Quiz quiz;
@@ -45,12 +48,12 @@ public class Question {
 	public Question() {
 	}
 
-	public Question(long id, String question, long question_number, long total_questions, String question_type) {
+	public Question(long id, String question, long questionNumber, long totalQuestions, String questionType) {
 		this.id = id;
 		this.question = question;
-		this.question_number = question_number;
-		this.total_questions = total_questions;
-		this.question_type = question_type;
+		this.questionNumber = questionNumber;
+		this.totalQuestions = totalQuestions;
+		this.questionType = questionType;
 	}
 
 	public long getId()
@@ -73,34 +76,34 @@ public class Question {
 		this.question = question;
 	}
 
-	public long getQuestion_number()
+	public long getQuestionNumber()
 	{
-		return question_number;
+		return questionNumber;
 	}
 
-	public void setQuestion_number(long question_number)
+	public void setQuestionNumber(long questionNumber)
 	{
-		this.question_number = question_number;
+		this.questionNumber = questionNumber;
 	}
 
-	public long getTotal_questions()
+	public long getTotalQuestions()
 	{
-		return total_questions;
+		return totalQuestions;
 	}
 
-	public void setTotal_questions(long total_questions)
+	public void setTotalQuestions(long totalQuestions)
 	{
-		this.total_questions = total_questions;
+		this.totalQuestions = totalQuestions;
 	}
 
-	public String getQuestion_type()
+	public String getQuestionType()
 	{
-		return question_type;
+		return questionType;
 	}
 
-	public void setQuestion_type(String question_type)
+	public void setQuestionType(String questionType)
 	{
-		this.question_type = question_type;
+		this.questionType = questionType;
 	}
 
 	public Quiz getQuiz()
