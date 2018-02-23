@@ -5,6 +5,8 @@
  */
 package is.hi.hbv601.pubquiz.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,4 +29,24 @@ public interface QuestionRepository
 	 */
 	@Transactional
 	Long deleteById(Long id);
+	
+	/**
+	 * Fetches all questions that have been made public.
+	 * @return A list of all publicly available questions.
+	 */
+	List<Question> findByIsPrivateFalseOrderByQuestionAsc();
+	
+	/**
+	 * Searches all publicly available questions for given string.
+	 * @param question Is the string that's being used to search for within the question
+	 * @return List of all questions that contain the search string within.
+	 */
+	List<Question> findByQuestionContainingIgnoreCaseAndIsPrivateFalse(String question);
+	
+	/**
+	 * Searches if the exact same question exists.
+	 * @param question The question that is being searched for.
+	 * @return The same question if it exists.
+	 */
+	long countByQuestion(String question);
 }

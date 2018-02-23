@@ -36,6 +36,7 @@
 			<button type="submit">Bæta við spurningu</button>
 		</form-->
 		<a th:href="@{'/quiz/' + ${quiz.id} + '/addQuestion'}">Ný spurning</a>
+		<a th:href="@{'/quiz/' + ${quiz.id} + '/addCreatedQuestion'}">Ný tilbúin spurning</a>
 		<a th:href="@{'/quiz/'}">Til baka í quiz lista</a>
 	</body>
 </html>

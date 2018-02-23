@@ -1,10 +1,13 @@
 /**
  * QuizController handles requests concerning quizzes.
  * 
+ * @author Eiður Örn Gunnarsson eog26@hi.is
  * @author Viktor Alex Brynjarsson vab18@hi.is
- * @date 13. feb. 2018
+ * @date 22. feb. 2018
  */
 package is.hi.hbv601.pubquiz.controller;
+
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -19,9 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import is.hi.hbv601.pubquiz.model.Question;
+import is.hi.hbv601.pubquiz.model.QuestionsInQuiz;
 import is.hi.hbv601.pubquiz.model.Quiz;
-import is.hi.hbv601.pubquiz.repository.QuestionRepository;
 import is.hi.hbv601.pubquiz.service.QuestionService;
+import is.hi.hbv601.pubquiz.service.QuestionsInQuizService;
 import is.hi.hbv601.pubquiz.service.QuizService;
 
 @Controller
@@ -33,6 +37,9 @@ public class QuizController
 	
 	@Autowired
 	QuestionService questionService;
+	
+	@Autowired
+	QuestionsInQuizService questionsInQuizService;
 	
 	/**
 	 * Show a list of quizzes
@@ -128,13 +135,12 @@ public class QuizController
     		Model model) {
     	
     	Quiz quiz = quizService.findQuiz(quizId);
-    	
     	Question q = new Question();
     	q.setQuiz(quiz);
     	
     	model.addAttribute("newQuestion", q);
     	model.addAttribute("quiz", quiz);
-
+    	
     	return new ModelAndView("question/form");
     }
 
@@ -153,14 +159,45 @@ public class QuizController
     	
     	if (!errors.hasErrors())
     	{
-        	questionService.addQuestion(question);
-        	
+    		if(!questionService.doesQuestionExist(question))
+    		{
+    			questionService.addQuestion(question);
+    			//TODO: Alert user if question already exists, maybe offer to use it?
+    		}
+        	Quiz quiz = quizService.findQuiz(quizId);
+        	QuestionsInQuiz link = new QuestionsInQuiz(quiz,question);
+        	questionsInQuizService.addQuestion(link);
         	return new ModelAndView("redirect:/quiz/" + quizId);
     	}
 
     	return new ModelAndView("question/form");
     }
 
+    /**
+     * Show form for adding a question that has already been created.
+     * @param quizId id of the quiz to which the question should be added
+     * @param model
+     * @return add created question form
+     */
+    @RequestMapping(value = "/{quizId}/addCreatedQuestion", method = RequestMethod.GET)
+    public ModelAndView quizAddCreatedQuestionForm(
+    		@PathVariable(value = "quizId") long quizId,
+    		Model model) {
+    	
+    	Quiz quiz = quizService.findQuiz(quizId);
+    	Question q = new Question();
+    	List<Question> publicQuestionList = questionService.getPublicQuestionList();
+    	List<Question> privateQuestionList = questionService.getPrivateQuestionList();
+    	q.setQuiz(quiz);
+    	
+    	model.addAttribute("newQuestion", q);
+    	model.addAttribute("quiz", quiz);
+    	model.addAttribute("publicList", publicQuestionList);
+    	model.addAttribute("privateList", privateQuestionList);
+    	
+    	return new ModelAndView("question/formForCreatedQuestion");
+    }
+    
     /**
      * Delete a quiz
      * @param quizId the id of the quiz to be deleted
@@ -175,6 +212,9 @@ public class QuizController
     	
     	// TODO: maybe check if question is part of quiz
     	
+    	questionsInQuizService.deleteLink(quizId, questionId);
+    	
+    	// TODO: Check who may actually delete the question (can only be done when we have authentication)
     	questionService.deleteQuestion(questionId);
     	
     	return new ModelAndView("redirect:/quiz/" + quizId);

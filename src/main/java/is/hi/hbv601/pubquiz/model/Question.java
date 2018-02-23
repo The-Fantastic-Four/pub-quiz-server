@@ -37,6 +37,8 @@ public class Question {
     private long total_questions;
 
     private String question_type;
+    
+    private boolean isPrivate;
 
 	@ManyToOne
 	@JoinColumn(name = "quiz_id")
@@ -45,12 +47,13 @@ public class Question {
 	public Question() {
 	}
 
-	public Question(long id, String question, long question_number, long total_questions, String question_type) {
+	public Question(long id, String question, long question_number, long total_questions, String question_type, boolean isPrivate) {
 		this.id = id;
 		this.question = question;
 		this.question_number = question_number;
 		this.total_questions = total_questions;
 		this.question_type = question_type;
+		this.isPrivate = isPrivate;
 	}
 
 	public long getId()
@@ -103,6 +106,16 @@ public class Question {
 		this.question_type = question_type;
 	}
 
+	public boolean getIsPrivate() 
+	{
+		return this.isPrivate;
+	}
+	
+	public void setIsPrivate(boolean isPrivate)
+	{
+		this.isPrivate = isPrivate;
+	}
+	
 	public Quiz getQuiz()
 	{
 		return quiz;
@@ -112,4 +125,5 @@ public class Question {
 	{
 		this.quiz = quiz;
 	}
+
 }
