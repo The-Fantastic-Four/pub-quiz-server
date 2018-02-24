@@ -10,8 +10,6 @@ package is.hi.hbv601.pubquiz.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.collection.IsEmptyCollection;
-import org.hamcrest.core.IsNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
