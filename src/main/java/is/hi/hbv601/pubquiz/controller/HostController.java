@@ -22,39 +22,39 @@ public class HostController
 {
 	@Autowired
 	HostService hostService;
-	
-	@RequestMapping(value="/login", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login()
 	{
 		return new ModelAndView("host/login");
 	}
-	
-	@RequestMapping(value="/register", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView registrationForm()
 	{
-		return new ModelAndView("host/registration"); 
+		return new ModelAndView("host/registration");
 	}
-	
-	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public ModelAndView registration(
-			@RequestParam String email, String password, String confirmPassword, String name, ModelMap model)
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ModelAndView registration(@RequestParam String email, String password, String confirmPassword, String name,
+			ModelMap model)
 	{
 		Host host = new Host();
 		host.setEmail(email);
 		host.setPassword(password);
 		host.setName(name);
-		
+
 		ModelAndView modelAndView = new ModelAndView("host/registration");
 		modelAndView.addObject("email", email);
 		modelAndView.addObject("name", name);
-		
+
 		Host hostExists = hostService.findHostByEmail(email);
 		if (hostExists == null)
 		{
 			hostService.saveHost(host);
 			modelAndView.addObject("successMessage", "Registration successful");
 		}
-		
+
 		return modelAndView;
 	}
 }

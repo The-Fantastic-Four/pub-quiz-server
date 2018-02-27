@@ -14,6 +14,6 @@ import is.hi.hbv601.pubquiz.model.Host;
 public interface HostServiceInt
 {
 	public Host findHostByEmail(String email);
-	
+
 	public void saveHost(Host host);
 }

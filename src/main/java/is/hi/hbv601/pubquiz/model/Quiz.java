@@ -26,7 +26,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "quiz")
-public class Quiz {
+public class Quiz
+{
 
 	/**
 	 * Unique identifier for the quiz
@@ -44,24 +45,25 @@ public class Quiz {
 	private String roomName;
 
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private Date startTime;
 
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
 	private int duration;
-	
-	@OneToMany(mappedBy = "quiz", cascade=CascadeType.REMOVE)
+
+	@OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
 	@OrderBy("question_number ASC")
 	private List<Question> questions;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "host_id")
 	private Host host;
 
-	public Quiz() {
-		
+	public Quiz()
+	{
+
 	}
-	
+
 	public long getId()
 	{
 		return id;
@@ -101,17 +103,17 @@ public class Quiz {
 	{
 		this.duration = duration;
 	}
-	
+
 	public List<Question> getQuestions()
 	{
 		return questions;
 	}
-	
+
 	public Host getHost()
 	{
 		return host;
 	}
-	
+
 	public void setHost(Host host)
 	{
 		this.host = host;

@@ -1,5 +1,6 @@
 /**
  * Interface for saving quizzes to the persistance layer
+ * 
  * @author Viktor Alex Brynjarsson
  * @date 13. feb. 2017
  */
@@ -13,32 +14,38 @@ import org.springframework.transaction.annotation.Transactional;
 import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Quiz;
 
-public interface QuizRepository
-	extends JpaRepository<Quiz, Long>
+public interface QuizRepository extends JpaRepository<Quiz, Long>
 {
 	/**
 	 * Find all quizzes in the repository
+	 * 
 	 * @return a list of quizzes
 	 */
 	List<Quiz> findAllByHost(Host host);
-	
+
 	/**
 	 * Find a quiz by id
-	 * @param id the id of the quiz to be found
+	 * 
+	 * @param id
+	 *            the id of the quiz to be found
 	 * @return the quiz that was found
 	 */
 	Quiz findOne(Long id);
-	
+
 	/**
 	 * Save quiz to the repository
-	 * @param q the quiz to be saved
+	 * 
+	 * @param q
+	 *            the quiz to be saved
 	 */
 	@SuppressWarnings("unchecked")
 	Quiz save(Quiz q);
 
 	/**
 	 * Delete a quiz from the repository
-	 * @param id the id of the quiz to be deleted
+	 * 
+	 * @param id
+	 *            the id of the quiz to be deleted
 	 * @return id of the quiz that was deleted
 	 */
 	@Transactional

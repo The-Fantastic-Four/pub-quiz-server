@@ -18,47 +18,54 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "QuestionsInQuiz")
-public class QuestionsInQuiz {
+public class QuestionsInQuiz
+{
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private long id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "quiz_id")
 	private Quiz quiz;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "question_id")
 	private Question question;
 
+	public QuestionsInQuiz()
+	{
 
-	public QuestionsInQuiz() {
-		
 	}
-	
-	public QuestionsInQuiz(Quiz quiz, Question question) {
+
+	public QuestionsInQuiz(Quiz quiz, Question question)
+	{
 		this.quiz = quiz;
 		this.question = question;
 	}
 
-	public Quiz getQuiz() {
+	public Quiz getQuiz()
+	{
 		return quiz;
 	}
 
-	public void setQuiz(Quiz quiz) {
+	public void setQuiz(Quiz quiz)
+	{
 		this.quiz = quiz;
 	}
 
-	public Question getQuestion() {
+	public Question getQuestion()
+	{
 		return question;
 	}
 
-	public void setQuestion(Question question) {
+	public void setQuestion(Question question)
+	{
 		this.question = question;
 	}
 
-	public long getId() {
+	public long getId()
+	{
 		return id;
 	}
 

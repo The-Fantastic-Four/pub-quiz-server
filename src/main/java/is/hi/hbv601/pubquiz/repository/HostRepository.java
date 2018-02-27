@@ -13,7 +13,7 @@ import is.hi.hbv601.pubquiz.model.Host;
 public interface HostRepository extends JpaRepository<Host, Long>
 {
 	Host findByEmail(String email);
-	
+
 	@SuppressWarnings("unchecked")
 	Host save(Host host);
 }

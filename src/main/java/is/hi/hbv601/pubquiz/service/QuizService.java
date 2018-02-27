@@ -1,5 +1,6 @@
 /**
  * Service for getting, and deleting quizzes
+ * 
  * @author Viktor Alex Brynjarsson vab18@hi.is
  * @date 13. feb. 2017
  */
@@ -23,6 +24,7 @@ public class QuizService implements QuizServiceInt
 
 	/**
 	 * Get a list of quizzes
+	 * 
 	 * @return list of quizzes
 	 */
 	@Override
@@ -33,7 +35,9 @@ public class QuizService implements QuizServiceInt
 
 	/**
 	 * Find a quiz by id
-	 * @param id the id of the quiz to be found
+	 * 
+	 * @param id
+	 *            the id of the quiz to be found
 	 * @return the quiz with the given id
 	 */
 	@Override
@@ -44,7 +48,9 @@ public class QuizService implements QuizServiceInt
 
 	/**
 	 * Add a new quiz
-	 * @param q the quiz to be added
+	 * 
+	 * @param q
+	 *            the quiz to be added
 	 */
 	@Override
 	public void addQuiz(Quiz q, Host host)
@@ -55,7 +61,9 @@ public class QuizService implements QuizServiceInt
 
 	/**
 	 * Delete quiz
-	 * @param id the id of the quiz to be deleted
+	 * 
+	 * @param id
+	 *            the id of the quiz to be deleted
 	 */
 	@Override
 	public void deleteQuiz(long id)

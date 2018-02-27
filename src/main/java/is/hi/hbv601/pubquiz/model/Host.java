@@ -23,7 +23,7 @@ public class Host
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private long id;
-	
+
 	private String name;
 
 	@Email

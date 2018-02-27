@@ -18,7 +18,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "question")
-public class Question {
+public class Question
+{
 
 	/**
 	 * Unique identifier for the quiz
@@ -29,24 +30,27 @@ public class Question {
 	private long id;
 
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
-    private String question;
+	private String question;
 
-    private long question_number;
+	private long question_number;
 
-    private long total_questions;
+	private long total_questions;
 
-    private String question_type;
-    
-    private boolean isPrivate;
+	private String question_type;
+
+	private boolean isPrivate;
 
 	@ManyToOne
 	@JoinColumn(name = "quiz_id")
 	private Quiz quiz;
 
-	public Question() {
+	public Question()
+	{
 	}
 
-	public Question(long id, String question, long question_number, long total_questions, String question_type, boolean isPrivate) {
+	public Question(long id, String question, long question_number, long total_questions, String question_type,
+			boolean isPrivate)
+	{
 		this.id = id;
 		this.question = question;
 		this.question_number = question_number;
@@ -105,16 +109,16 @@ public class Question {
 		this.question_type = question_type;
 	}
 
-	public boolean getIsPrivate() 
+	public boolean getIsPrivate()
 	{
 		return this.isPrivate;
 	}
-	
+
 	public void setIsPrivate(boolean isPrivate)
 	{
 		this.isPrivate = isPrivate;
 	}
-	
+
 	public Quiz getQuiz()
 	{
 		return quiz;
