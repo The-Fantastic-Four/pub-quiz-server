@@ -6,7 +6,6 @@
  */
 package is.hi.hbv601.pubquiz.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;

@@ -7,10 +7,6 @@
  */
 package is.hi.hbv601.pubquiz.service.interfaces;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import is.hi.hbv601.pubquiz.model.Answer;
 import is.hi.hbv601.pubquiz.model.ReceivedAnswer;
 
 public interface AnswerServiceInt {

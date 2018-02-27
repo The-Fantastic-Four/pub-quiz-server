@@ -10,7 +10,6 @@ package is.hi.hbv601.pubquiz.service.interfaces;
 
 import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
 import is.hi.hbv601.pubquiz.model.Question;
-import is.hi.hbv601.pubquiz.model.Quiz;
 
 public interface QuestionServiceInt {
 	/**

@@ -5,12 +5,9 @@
  */
 package is.hi.hbv601.pubquiz.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.QuestionsInQuiz;
 
 public interface QuestionsInQuizRepository
