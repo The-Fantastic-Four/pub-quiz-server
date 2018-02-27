@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.repository.QuizRepository;
 import is.hi.hbv601.pubquiz.service.interfaces.QuizServiceInt;
@@ -25,9 +26,9 @@ public class QuizService implements QuizServiceInt
 	 * @return list of quizzes
 	 */
 	@Override
-	public List<Quiz> allQuizzes()
+	public List<Quiz> allQuizzesByHost(Host host)
 	{
-		return quizRepository.findAll();
+		return quizRepository.findAllByHost(host);
 	}
 
 	/**
@@ -46,8 +47,9 @@ public class QuizService implements QuizServiceInt
 	 * @param q the quiz to be added
 	 */
 	@Override
-	public void addQuiz(Quiz q)
+	public void addQuiz(Quiz q, Host host)
 	{
+		q.setHost(host);
 		quizRepository.save(q);
 	}
 

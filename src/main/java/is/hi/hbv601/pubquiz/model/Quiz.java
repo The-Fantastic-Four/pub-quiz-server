@@ -13,6 +13,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -40,8 +42,6 @@ public class Quiz {
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
 	@Size(min = 1, max = 35, message = "Lengd nafns þarf að vera á bilinu 1-35")
 	private String roomName;
-	
-	//private long hostId;
 
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
@@ -50,17 +50,13 @@ public class Quiz {
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
 	private int duration;
 	
-	/**
-	 * List of questions in this quiz
-	 */
 	@OneToMany(mappedBy = "quiz", cascade=CascadeType.REMOVE)
 	@OrderBy("question_number ASC")
 	private List<Question> questions;
 	
-	public List<Question> getQuestions()
-	{
-		return questions;
-	}
+	@ManyToOne
+	@JoinColumn(name = "host_id")
+	private Host host;
 
 	public Quiz() {
 		
@@ -86,18 +82,6 @@ public class Quiz {
 		this.roomName = roomName;
 	}
 
-	/*
-	public long getHostId()
-	{
-		return hostId;
-	}
-
-	public void setHostId(long hostId)
-	{
-		this.hostId = hostId;
-	}
-	*/
-
 	public Date getStartTime()
 	{
 		return startTime;
@@ -116,5 +100,20 @@ public class Quiz {
 	public void setDuration(int duration)
 	{
 		this.duration = duration;
+	}
+	
+	public List<Question> getQuestions()
+	{
+		return questions;
+	}
+	
+	public Host getHost()
+	{
+		return host;
+	}
+	
+	public void setHost(Host host)
+	{
+		this.host = host;
 	}
 }

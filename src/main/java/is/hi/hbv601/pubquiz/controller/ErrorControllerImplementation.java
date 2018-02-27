@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Ebba Þóra Hvannberg
  */
 @Controller
-public class VilluController   implements ErrorController{
+public class ErrorControllerImplementation   implements ErrorController{
     
     private static final String PATH = "/error";
     
@@ -38,7 +38,7 @@ public class VilluController   implements ErrorController{
     public ModelAndView villa(HttpServletRequest request) {
      
         // sendir attribute til viðmótsins og birtir síðuna með villuskilaboðum  
-        return new ModelAndView("villuSida", "attrs", getErrorAttributes(request, false));
+        return new ModelAndView("errorPage", "attrs", getErrorAttributes(request, false));
     }
     
     /**
@@ -48,7 +48,6 @@ public class VilluController   implements ErrorController{
     public String getErrorPath() {
         return PATH;
     } 
-    
     
     /**
      * Nær í villu-attribute sem komu út úr Http beiðni 
@@ -62,15 +61,5 @@ public class VilluController   implements ErrorController{
 		return this.errorAttributes.getErrorAttributes(requestAttributes,
 				includeStackTrace);
 	}
-    
-    
-    /**
-     * Birtir heima vefsíðuna 
-     * @return vefsíðu fyrir heimaslóð 
-     */
-    @RequestMapping("/heima")
-    public String heima() {
-        return "heima";
-    }
 }
 

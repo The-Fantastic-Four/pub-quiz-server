@@ -12,6 +12,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,12 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.QuestionsInQuiz;
 import is.hi.hbv601.pubquiz.model.Quiz;
+import is.hi.hbv601.pubquiz.service.HostService;
 import is.hi.hbv601.pubquiz.service.QuestionService;
 import is.hi.hbv601.pubquiz.service.QuestionsInQuizService;
 import is.hi.hbv601.pubquiz.service.QuizService;
+import javassist.NotFoundException;
 
 @Controller
 @RequestMapping("/quiz")
@@ -41,14 +46,18 @@ public class QuizController
 	@Autowired
 	QuestionsInQuizService questionsInQuizService;
 	
+	@Autowired
+	HostService hostService;
+	
 	/**
 	 * Show a list of quizzes
 	 * @param model 
 	 * @return the list of quizzes view
 	 */
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ModelAndView listQuizzes(Model model) {
-    	model.addAttribute("quizzes", quizService.allQuizzes());
+    public ModelAndView listQuizzes(Model model, Authentication authentication) {
+		Host host = hostService.findHostByEmail(authentication.getName());
+    	model.addAttribute("quizzes", quizService.allQuizzesByHost(host));
     	
     	return new ModelAndView("quiz/index");
     }
@@ -64,11 +73,13 @@ public class QuizController
     public ModelAndView saveQuiz(
     		@Valid @ModelAttribute("quiz") Quiz quiz, 
     		BindingResult errors,
-    		Model model) {
+    		Model model, 
+    		Authentication authentication) {
+		Host host = hostService.findHostByEmail(authentication.getName());
     	
     	if (!errors.hasErrors())
     	{
-    		quizService.addQuiz(quiz);
+    		quizService.addQuiz(quiz, host);
         	
         	return new ModelAndView("redirect:/quiz");
     	}
@@ -93,16 +104,22 @@ public class QuizController
      * @param quizId the id of the quiz to be viewed
      * @param model
      * @return the quiz
+     * @throws NotFoundException 
      */
     @RequestMapping(value = "/{quizId}", method = RequestMethod.GET)
     public ModelAndView showQuiz(
     		@PathVariable(value = "quizId") long quizId,
-    		Model model) {
-
-    	model.addAttribute("quiz", quizService.findQuiz(quizId));
+    		Model model, 
+    		Authentication authentication) throws NotFoundException {
+		Host host = hostService.findHostByEmail(authentication.getName());
+    	Quiz quiz = quizService.findQuiz(quizId);
     	
-    	Quiz q = quizService.findQuiz(quizId);
-    	System.out.println("Number of questions: " + q.getQuestions().size());
+    	if (quiz == null)
+    		throw new NotFoundException("Quiz could not be found");
+    	if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
+			throw new AccessDeniedException("Host did not create this quiz");
+
+    	model.addAttribute("quiz", quiz);
     	
     	return new ModelAndView("quiz/show");
     }
@@ -112,11 +129,20 @@ public class QuizController
      * @param quizId the id of the quiz to be deleted
      * @param model
      * @return list of quizzes
+     * @throws NotFoundException 
      */
     @RequestMapping(value = "/{quizId}", method = RequestMethod.DELETE)
     public ModelAndView deleteQuiz(
     		@PathVariable(value = "quizId") long quizId,
-    		Model model) {
+    		Model model, 
+    		Authentication authentication) throws NotFoundException {
+		Host host = hostService.findHostByEmail(authentication.getName());
+    	Quiz quiz = quizService.findQuiz(quizId);
+    	
+    	if (quiz == null)
+    		throw new NotFoundException("Quiz could not be found");
+    	if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
+			throw new AccessDeniedException("Host did not create this quiz");
     	
     	quizService.deleteQuiz(quizId);
     	
@@ -128,17 +154,25 @@ public class QuizController
      * @param quizId id of the quiz to which the question should be added
      * @param model
      * @return add question form
+     * @throws NotFoundException 
      */
     @RequestMapping(value = "/{quizId}/addQuestion", method = RequestMethod.GET)
     public ModelAndView quizAddQuestionForm(
     		@PathVariable(value = "quizId") long quizId,
-    		Model model) {
-    	
+    		Model model, 
+    		Authentication authentication) throws NotFoundException {
+		Host host = hostService.findHostByEmail(authentication.getName());
     	Quiz quiz = quizService.findQuiz(quizId);
-    	Question q = new Question();
-    	q.setQuiz(quiz);
     	
-    	model.addAttribute("newQuestion", q);
+    	if (quiz == null)
+    		throw new NotFoundException("Quiz could not be found");
+    	if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
+			throw new AccessDeniedException("Host did not create this quiz");
+    	
+    	Question question = new Question();
+    	question.setQuiz(quiz);
+    	
+    	model.addAttribute("newQuestion", question);
     	model.addAttribute("quiz", quiz);
     	
     	return new ModelAndView("question/form");
@@ -149,13 +183,22 @@ public class QuizController
      * @param quizId id of the quiz to which the question should be added
      * @param model
      * @return list of quizzes
+     * @throws NotFoundException 
      */
     @RequestMapping(value = "/{quizId}/addQuestion", method = RequestMethod.POST)
     public ModelAndView quizAddQuestion(
     		@PathVariable(value = "quizId") long quizId,
     		@Valid @ModelAttribute("newQuestion") Question question, 
     		BindingResult errors,
-    		Model model) {
+    		Model model, 
+    		Authentication authentication) throws NotFoundException {
+		Host host = hostService.findHostByEmail(authentication.getName());
+    	Quiz quiz = quizService.findQuiz(quizId);
+    	
+    	if (quiz == null)
+    		throw new NotFoundException("Quiz could not be found");
+    	if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
+			throw new AccessDeniedException("Host did not create this quiz");
     	
     	if (!errors.hasErrors())
     	{
@@ -164,7 +207,6 @@ public class QuizController
     			questionService.addQuestion(question);
     			//TODO: Alert user if question already exists, maybe offer to use it?
     		}
-        	Quiz quiz = quizService.findQuiz(quizId);
         	QuestionsInQuiz link = new QuestionsInQuiz(quiz,question);
         	questionsInQuizService.addQuestion(link);
         	return new ModelAndView("redirect:/quiz/" + quizId);
@@ -178,19 +220,27 @@ public class QuizController
      * @param quizId id of the quiz to which the question should be added
      * @param model
      * @return add created question form
+     * @throws NotFoundException 
      */
     @RequestMapping(value = "/{quizId}/addCreatedQuestion", method = RequestMethod.GET)
     public ModelAndView quizAddCreatedQuestionForm(
     		@PathVariable(value = "quizId") long quizId,
-    		Model model) {
-    	
+    		Model model, 
+    		Authentication authentication) throws NotFoundException {
+		Host host = hostService.findHostByEmail(authentication.getName());
     	Quiz quiz = quizService.findQuiz(quizId);
-    	Question q = new Question();
+    	
+    	if (quiz == null)
+    		throw new NotFoundException("Quiz could not be found");
+    	if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
+			throw new AccessDeniedException("Host did not create this quiz");
+
+    	Question question = new Question();
     	List<Question> publicQuestionList = questionService.getPublicQuestionList();
     	List<Question> privateQuestionList = questionService.getPrivateQuestionList();
-    	q.setQuiz(quiz);
+    	question.setQuiz(quiz);
     	
-    	model.addAttribute("newQuestion", q);
+    	model.addAttribute("newQuestion", question);
     	model.addAttribute("quiz", quiz);
     	model.addAttribute("publicList", publicQuestionList);
     	model.addAttribute("privateList", privateQuestionList);
@@ -203,18 +253,27 @@ public class QuizController
      * @param quizId the id of the quiz to be deleted
      * @param model
      * @return list of quizzes
+     * @throws NotFoundException 
      */
     @RequestMapping(value = "/{quizId}/question/{questionId}", method = RequestMethod.DELETE)
     public ModelAndView deleteQuestion(
     		@PathVariable(value = "quizId") long quizId,
     		@PathVariable(value = "questionId") long questionId,
-    		Model model) {
+    		Model model, 
+    		Authentication authentication) throws NotFoundException {
+		Host host = hostService.findHostByEmail(authentication.getName());
+    	Quiz quiz = quizService.findQuiz(quizId);
+    	
+    	if (quiz == null)
+    		throw new NotFoundException("Quiz could not be found");
+    	if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
+			throw new AccessDeniedException("Host did not create this quiz");
     	
     	// TODO: maybe check if question is part of quiz
     	
     	questionsInQuizService.deleteLink(quizId, questionId);
     	
-    	// TODO: Check who may actually delete the question (can only be done when we have authentication)
+    	// TODO: If this question is in use, this may be dangerous
     	questionService.deleteQuestion(questionId);
     	
     	return new ModelAndView("redirect:/quiz/" + quizId);

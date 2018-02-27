@@ -7,6 +7,7 @@ package is.hi.hbv601.pubquiz.service.interfaces;
 
 import java.util.List;
 
+import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Quiz;
 
 public interface QuizServiceInt
@@ -15,7 +16,7 @@ public interface QuizServiceInt
 	 * Fetches all quizzes in the database
 	 * @return list of all the quizzes
 	 */
-	public List<Quiz> allQuizzes();
+	public List<Quiz> allQuizzesByHost(Host host);
 	
 	/**
 	 * Finds quiz by it's id
@@ -28,7 +29,7 @@ public interface QuizServiceInt
 	 * Add a new quiz to the database
 	 * @param q the quiz to be added
 	 */
-	public void addQuiz(Quiz q);
+	public void addQuiz(Quiz q, Host host);
 	
 	/**
 	 * Delete quiz from database

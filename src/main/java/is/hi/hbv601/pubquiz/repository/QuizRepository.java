@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Quiz;
 
 public interface QuizRepository
@@ -19,7 +20,7 @@ public interface QuizRepository
 	 * Find all quizzes in the repository
 	 * @return a list of quizzes
 	 */
-	List<Quiz> findAll();
+	List<Quiz> findAllByHost(Host host);
 	
 	/**
 	 * Find a quiz by id
