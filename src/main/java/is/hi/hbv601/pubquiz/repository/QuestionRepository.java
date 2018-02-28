@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Question;
 
 public interface QuestionRepository extends JpaRepository<Question, Long>
@@ -40,6 +41,13 @@ public interface QuestionRepository extends JpaRepository<Question, Long>
 	 * @return A list of all publicly available questions.
 	 */
 	List<Question> findByIsPrivateFalseOrderByQuestionAsc();
+	
+	/**
+	 * Fetches all questions that are private and were created by the given host
+	 * @param host the host that created the private questions
+	 * @return A list of questions
+	 */
+	List<Question> findByIsPrivateTrueAndHostOrderByQuestionAsc(Host host);
 
 	/**
 	 * Searches all publicly available questions for given string.

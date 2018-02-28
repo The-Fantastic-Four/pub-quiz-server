@@ -11,12 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
+import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.repository.QuestionRepository;
 import is.hi.hbv601.pubquiz.service.interfaces.QuestionServiceInt;
+import javassist.NotFoundException;
 
 @Service
 public class QuestionService implements QuestionServiceInt
@@ -24,6 +27,18 @@ public class QuestionService implements QuestionServiceInt
 
 	@Autowired
 	QuestionRepository questionRepository;
+	
+	public Question findQuestion(long id, Host host) throws NotFoundException
+	{
+		Question question = questionRepository.findOne(id);
+		
+		if (question == null)
+			throw new NotFoundException("Could not find question with given id");
+		if (host == null || question.getIsPrivate() && question.getHost().getId() != host.getId())
+			throw new AccessDeniedException("Host does not have access to this question");
+		
+		return question;
+	}
 
 	public Question getQuestionFromQuiz(FetchQuestionWrapper w)
 	{
@@ -100,14 +115,9 @@ public class QuestionService implements QuestionServiceInt
 	 * 
 	 * @return list of all private questions for appropriate user.
 	 */
-	public List<Question> getPrivateQuestionList()
+	public List<Question> getPrivateQuestionList(Host host)
 	{
-		// TODO: When login system is in place a query can be created and should be
-		// called here
-		// for getting questions for related user.
-		List<Question> l = new ArrayList<Question>();
-		l.add(new Question(40, "Question generated in code for testing purposes", 3, 5, "text", true));
-		return l;
+		return questionRepository.findByIsPrivateTrueAndHostOrderByQuestionAsc(host);
 	}
 
 	/**

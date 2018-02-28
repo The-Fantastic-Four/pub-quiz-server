@@ -23,10 +23,10 @@
 				<textarea rows="24" cols="80" th:field="*{question}"></textarea>
 			</div>
 			<div>
-				<label for="isPrivate">Sýnileiki (geta aðrir valið að nota þessa spurningu í framtíðinni í sínu quizi)</label>
+				<label for="isPrivate">Sýnileiki</label>
 				<select th:field="*{isPrivate}">
-					<option value="false">Almennings aðgangur</option>
-					<option value="true">Persónulegur aðgangur</option>
+					<option value="true" selected="selected">aðeins fyrir mig</option>
+					<option value="false">spurningabankinn</option>
 				</select>
 			</div>
 			<div>

@@ -9,10 +9,19 @@
 package is.hi.hbv601.pubquiz.service.interfaces;
 
 import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
+import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Question;
+import javassist.NotFoundException;
 
 public interface QuestionServiceInt
 {
+	/**
+	 * Finds a question by it's database id
+	 * @param id the id of the question
+	 * @return a question if found, null otherwise
+	 */
+	public Question findQuestion(long id, Host host) throws NotFoundException;
+	
 	/**
 	 * Checks if the data is valid and if so fetches the related question.
 	 * 

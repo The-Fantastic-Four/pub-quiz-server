@@ -41,7 +41,7 @@ public class Question
 
 	private String question_type;
 
-	private boolean isPrivate;
+	private boolean isPrivate = true;
 
 	@ManyToMany(mappedBy = "questions")
 	private Set<Quiz> quizzes;

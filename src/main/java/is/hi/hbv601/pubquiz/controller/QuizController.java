@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import is.hi.hbv601.pubquiz.model.Host;
@@ -113,8 +114,13 @@ public class QuizController
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
 		Quiz quiz = quizService.findQuiz(quizId, host);
-
+		
+		List<Question> publicQuestionList = questionService.getPublicQuestionList();
+		List<Question> privateQuestionList = questionService.getPrivateQuestionList(host);
+		
 		model.addAttribute("quiz", quiz);
+		model.addAttribute("publicList", publicQuestionList);
+		model.addAttribute("privateList", privateQuestionList);
 
 		return new ModelAndView("quiz/show");
 	}
@@ -186,6 +192,7 @@ public class QuizController
 
 		if (!errors.hasErrors())
 		{
+			question.setHost(host);
 			question = questionService.saveQuestion(question);
 
 			quiz.addQuestion(question);
@@ -198,31 +205,27 @@ public class QuizController
 	}
 
 	/**
-	 * Show form for adding a question that has already been created.
+	 * Add an empty question to a quiz
 	 * 
 	 * @param quizId
 	 *            id of the quiz to which the question should be added
 	 * @param model
-	 * @return add created question form
+	 * @return list of quizzes
 	 * @throws NotFoundException
 	 */
-	@RequestMapping(value = "/{quizId}/addCreatedQuestion", method = RequestMethod.GET)
-	public ModelAndView quizAddCreatedQuestionForm(@PathVariable(value = "quizId") long quizId, Model model,
+	@RequestMapping(value = "/{quizId}/addExistingQuestion", method = RequestMethod.POST)
+	public ModelAndView quizAddQuestion(@PathVariable(value = "quizId") long quizId,
+			@RequestParam long questionId, Model model,
 			Authentication authentication) throws NotFoundException
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
 		Quiz quiz = quizService.findQuiz(quizId, host);
+		Question question = questionService.findQuestion(questionId, host);
+		
+		quiz.addQuestion(question);
+		quizService.saveQuiz(quiz, host);
 
-		Question question = new Question();
-		List<Question> publicQuestionList = questionService.getPublicQuestionList();
-		List<Question> privateQuestionList = questionService.getPrivateQuestionList();
-
-		model.addAttribute("newQuestion", question);
-		model.addAttribute("quiz", quiz);
-		model.addAttribute("publicList", publicQuestionList);
-		model.addAttribute("privateList", privateQuestionList);
-
-		return new ModelAndView("question/formForCreatedQuestion");
+		return new ModelAndView("redirect:/quiz/" + quizId);
 	}
 
 	/**
