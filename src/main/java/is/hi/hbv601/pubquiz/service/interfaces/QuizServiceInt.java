@@ -8,6 +8,7 @@ package is.hi.hbv601.pubquiz.service.interfaces;
 
 import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Quiz;
+import javassist.NotFoundException;
 
 public interface QuizServiceInt
 {
@@ -16,9 +17,11 @@ public interface QuizServiceInt
 	 * 
 	 * @param id
 	 *            id of the quiz to be found
+	 * @param host
+	 * 			  the host which owns the quiz
 	 * @return the quiz that was found
 	 */
-	public Quiz findQuiz(long id);
+	public Quiz findQuiz(long id, Host host) throws NotFoundException;
 
 	/**
 	 * Add a new quiz to the database

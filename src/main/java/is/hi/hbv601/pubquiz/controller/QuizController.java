@@ -12,7 +12,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -118,12 +117,7 @@ public class QuizController
 			Authentication authentication) throws NotFoundException
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
-		Quiz quiz = quizService.findQuiz(quizId);
-
-		if (quiz == null)
-			throw new NotFoundException("Quiz could not be found");
-		if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
-			throw new AccessDeniedException("Host did not create this quiz");
+		Quiz quiz = quizService.findQuiz(quizId, host);
 
 		model.addAttribute("quiz", quiz);
 
@@ -144,12 +138,10 @@ public class QuizController
 			Authentication authentication) throws NotFoundException
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
-		Quiz quiz = quizService.findQuiz(quizId);
-
-		if (quiz == null)
-			throw new NotFoundException("Quiz could not be found");
-		if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
-			throw new AccessDeniedException("Host did not create this quiz");
+		
+		// The findQuiz function throws exceptions if the host does not own the quiz
+		@SuppressWarnings("unused")
+		Quiz quiz = quizService.findQuiz(quizId, host);
 
 		quizService.deleteQuiz(quizId);
 
@@ -170,12 +162,7 @@ public class QuizController
 			Authentication authentication) throws NotFoundException
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
-		Quiz quiz = quizService.findQuiz(quizId);
-
-		if (quiz == null)
-			throw new NotFoundException("Quiz could not be found");
-		if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
-			throw new AccessDeniedException("Host did not create this quiz");
+		Quiz quiz = quizService.findQuiz(quizId, host);
 
 		Question question = new Question();
 		question.setQuiz(quiz);
@@ -201,12 +188,7 @@ public class QuizController
 			Authentication authentication) throws NotFoundException
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
-		Quiz quiz = quizService.findQuiz(quizId);
-
-		if (quiz == null)
-			throw new NotFoundException("Quiz could not be found");
-		if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
-			throw new AccessDeniedException("Host did not create this quiz");
+		Quiz quiz = quizService.findQuiz(quizId, host);
 
 		if (!errors.hasErrors())
 		{
@@ -237,12 +219,7 @@ public class QuizController
 			Authentication authentication) throws NotFoundException
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
-		Quiz quiz = quizService.findQuiz(quizId);
-
-		if (quiz == null)
-			throw new NotFoundException("Quiz could not be found");
-		if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
-			throw new AccessDeniedException("Host did not create this quiz");
+		Quiz quiz = quizService.findQuiz(quizId, host);
 
 		Question question = new Question();
 		List<Question> publicQuestionList = questionService.getPublicQuestionList();
@@ -272,12 +249,10 @@ public class QuizController
 			throws NotFoundException
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
-		Quiz quiz = quizService.findQuiz(quizId);
 
-		if (quiz == null)
-			throw new NotFoundException("Quiz could not be found");
-		if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
-			throw new AccessDeniedException("Host did not create this quiz");
+		// The findQuiz function throws exceptions if the host does not own the quiz
+		@SuppressWarnings("unused")
+		Quiz quiz = quizService.findQuiz(quizId, host);
 
 		// TODO: maybe check if question is part of quiz
 
