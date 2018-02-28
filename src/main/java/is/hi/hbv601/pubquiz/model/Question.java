@@ -25,7 +25,7 @@ public class Question
 {
 
 	/**
-	 * Unique identifier for the quiz
+	 * Unique identifier for the question
 	 */
 	@Id
 	@GeneratedValue(generator = "increment")
