@@ -6,8 +6,6 @@
  */
 package is.hi.hbv601.pubquiz.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +19,6 @@ public class QuizService implements QuizServiceInt
 {
 	@Autowired
 	QuizRepository quizRepository;
-
-	/**
-	 * Get a list of quizzes
-	 * 
-	 * @return list of quizzes
-	 */
-	@Override
-	public List<Quiz> allQuizzesByHost(Host host)
-	{
-		return quizRepository.findAllByHost(host);
-	}
 
 	/**
 	 * Find a quiz by id

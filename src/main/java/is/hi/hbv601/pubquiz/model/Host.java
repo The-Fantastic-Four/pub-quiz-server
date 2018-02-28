@@ -6,9 +6,13 @@
  */
 package is.hi.hbv601.pubquiz.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -35,6 +39,13 @@ public class Host
 	private int active;
 
 	private String role;
+
+	@OneToMany(mappedBy = "host")
+	@OrderBy("start_time DESC")
+	private List<Quiz> quizzes;
+
+	@OneToMany(mappedBy = "host")
+	private List<Question> questions;
 
 	public Host()
 	{
@@ -99,5 +110,15 @@ public class Host
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	public List<Quiz> getQuizzes()
+	{
+		return quizzes;
+	}
+
+	public List<Question> getQuestions()
+	{
+		return questions;
 	}
 }

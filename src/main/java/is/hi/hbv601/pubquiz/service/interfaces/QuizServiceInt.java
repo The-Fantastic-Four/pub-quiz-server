@@ -6,20 +6,11 @@
  */
 package is.hi.hbv601.pubquiz.service.interfaces;
 
-import java.util.List;
-
 import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Quiz;
 
 public interface QuizServiceInt
 {
-	/**
-	 * Fetches all quizzes in the database
-	 * 
-	 * @return list of all the quizzes
-	 */
-	public List<Quiz> allQuizzesByHost(Host host);
-
 	/**
 	 * Finds quiz by it's id
 	 * 

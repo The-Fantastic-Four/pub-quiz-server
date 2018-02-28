@@ -59,7 +59,7 @@ public class QuizController
 	public ModelAndView listQuizzes(Model model, Authentication authentication)
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
-		model.addAttribute("quizzes", quizService.allQuizzesByHost(host));
+		model.addAttribute("quizzes", host.getQuizzes());
 
 		return new ModelAndView("quiz/index");
 	}

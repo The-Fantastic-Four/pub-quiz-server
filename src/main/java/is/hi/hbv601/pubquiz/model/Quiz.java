@@ -9,7 +9,6 @@ package is.hi.hbv601.pubquiz.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -51,7 +50,7 @@ public class Quiz
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
 	private int duration;
 
-	@OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "quiz")
 	@OrderBy("question_number ASC")
 	private List<Question> questions;
 

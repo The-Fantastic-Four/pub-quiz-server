@@ -43,6 +43,10 @@ public class Question
 	@ManyToOne
 	@JoinColumn(name = "quiz_id")
 	private Quiz quiz;
+	
+	@ManyToOne
+	@JoinColumn(name = "host_id")
+	private Host host;
 
 	public Question()
 	{
@@ -127,6 +131,16 @@ public class Question
 	public void setQuiz(Quiz quiz)
 	{
 		this.quiz = quiz;
+	}
+	
+	public Host getHost()
+	{
+		return host;
+	}
+	
+	public void setHost(Host host)
+	{
+		this.host = host;
 	}
 
 }
