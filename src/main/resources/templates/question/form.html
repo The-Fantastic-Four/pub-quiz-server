@@ -10,14 +10,8 @@
 		<form action="#" th:action="@{'/quiz/' + ${quiz.id} + '/addQuestion'}" th:object="${newQuestion}" method="post">
 			<input type="hidden" th:field="*{id}" />
 			<input type="hidden" th:field="*{total_questions}" />
-			<div>
-				<label for="roomName">Númer spurningar</label>
-				<input type="number" th:field="*{question_number}" />
-			</div>
-			<div>
-				<label for="startTime">Tegund spurningar</label>
-				<input type="text" th:field="*{question_type}" />
-			</div>
+			<input type="hidden" th:field="*{question_number}" />
+			<input type="hidden" th:field="*{question_type}" />
 			<div>
 				<label for="duration">Spurning</label>
 				<textarea rows="24" cols="80" th:field="*{question}"></textarea>

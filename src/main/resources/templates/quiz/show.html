@@ -12,18 +12,12 @@
 	<table>
 		<thead>
 			<tr>
-				<th>Auðkenni</th>
-				<th>Númer</th>
-				<th>Tegund</th>
 				<th>Spurning</th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="question: ${quiz.questions}">
-				<td th:text="${question.id}">0</td>
-				<td th:text="${question.question_number}">3</td>
-				<td th:text="${question.question_type}">blank</td>
 				<td th:text="${question.question}">How?</td>
 				<td>
 					<form action="#"
