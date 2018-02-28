@@ -18,7 +18,7 @@ public interface QuizServiceInt
 	 * @param id
 	 *            id of the quiz to be found
 	 * @param host
-	 * 			  the host which owns the quiz
+	 *            the host which owns the quiz
 	 * @return the quiz that was found
 	 */
 	public Quiz findQuiz(long id, Host host) throws NotFoundException;
@@ -29,7 +29,7 @@ public interface QuizServiceInt
 	 * @param q
 	 *            the quiz to be added
 	 */
-	public void addQuiz(Quiz q, Host host);
+	public void saveQuiz(Quiz q, Host host);
 
 	/**
 	 * Delete quiz from database

@@ -10,7 +10,6 @@
 		<form action="#" th:action="@{'/quiz/' + ${quiz.id} + '/addQuestion'}" th:object="${newQuestion}" method="post">
 			<input type="hidden" th:field="*{id}" />
 			<input type="hidden" th:field="*{total_questions}" />
-			<input type="hidden" th:field="*{quiz}" />
 			<div>
 				<label for="roomName">Númer spurningar</label>
 				<input type="number" th:field="*{question_number}" />

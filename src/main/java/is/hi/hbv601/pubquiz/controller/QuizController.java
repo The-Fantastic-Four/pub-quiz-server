@@ -24,11 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Question;
-import is.hi.hbv601.pubquiz.model.QuestionsInQuiz;
 import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.service.HostService;
 import is.hi.hbv601.pubquiz.service.QuestionService;
-import is.hi.hbv601.pubquiz.service.QuestionsInQuizService;
 import is.hi.hbv601.pubquiz.service.QuizService;
 import javassist.NotFoundException;
 
@@ -41,9 +39,6 @@ public class QuizController
 
 	@Autowired
 	QuestionService questionService;
-
-	@Autowired
-	QuestionsInQuizService questionsInQuizService;
 
 	@Autowired
 	HostService hostService;
@@ -81,7 +76,7 @@ public class QuizController
 
 		if (!errors.hasErrors())
 		{
-			quizService.addQuiz(quiz, host);
+			quizService.saveQuiz(quiz, host);
 
 			return new ModelAndView("redirect:/quiz");
 		}
@@ -138,7 +133,7 @@ public class QuizController
 			Authentication authentication) throws NotFoundException
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
-		
+
 		// The findQuiz function throws exceptions if the host does not own the quiz
 		@SuppressWarnings("unused")
 		Quiz quiz = quizService.findQuiz(quizId, host);
@@ -165,7 +160,6 @@ public class QuizController
 		Quiz quiz = quizService.findQuiz(quizId, host);
 
 		Question question = new Question();
-		question.setQuiz(quiz);
 
 		model.addAttribute("newQuestion", question);
 		model.addAttribute("quiz", quiz);
@@ -192,13 +186,11 @@ public class QuizController
 
 		if (!errors.hasErrors())
 		{
-			if (!questionService.doesQuestionExist(question))
-			{
-				questionService.addQuestion(question);
-				// TODO: Alert user if question already exists, maybe offer to use it?
-			}
-			QuestionsInQuiz link = new QuestionsInQuiz(quiz, question);
-			questionsInQuizService.addQuestion(link);
+			question = questionService.saveQuestion(question);
+
+			quiz.addQuestion(question);
+			quizService.saveQuiz(quiz, host);
+
 			return new ModelAndView("redirect:/quiz/" + quizId);
 		}
 
@@ -224,7 +216,6 @@ public class QuizController
 		Question question = new Question();
 		List<Question> publicQuestionList = questionService.getPublicQuestionList();
 		List<Question> privateQuestionList = questionService.getPrivateQuestionList();
-		question.setQuiz(quiz);
 
 		model.addAttribute("newQuestion", question);
 		model.addAttribute("quiz", quiz);
@@ -249,17 +240,10 @@ public class QuizController
 			throws NotFoundException
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
-
-		// The findQuiz function throws exceptions if the host does not own the quiz
-		@SuppressWarnings("unused")
 		Quiz quiz = quizService.findQuiz(quizId, host);
 
-		// TODO: maybe check if question is part of quiz
-
-		questionsInQuizService.deleteLink(quizId, questionId);
-
-		// TODO: If this question is in use, this may be dangerous
-		questionService.deleteQuestion(questionId);
+		quiz.getQuestions().removeIf(q -> q.getId() == questionId);
+		quizService.saveQuiz(quiz, host);
 
 		return new ModelAndView("redirect:/quiz/" + quizId);
 	}

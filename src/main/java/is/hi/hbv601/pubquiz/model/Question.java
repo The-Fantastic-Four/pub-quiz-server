@@ -6,11 +6,14 @@
  */
 package is.hi.hbv601.pubquiz.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -40,10 +43,9 @@ public class Question
 
 	private boolean isPrivate;
 
-	@ManyToOne
-	@JoinColumn(name = "quiz_id")
-	private Quiz quiz;
-	
+	@ManyToMany(mappedBy = "questions")
+	private Set<Quiz> quizzes;
+
 	@ManyToOne
 	@JoinColumn(name = "host_id")
 	private Host host;
@@ -123,21 +125,16 @@ public class Question
 		this.isPrivate = isPrivate;
 	}
 
-	public Quiz getQuiz()
+	public Set<Quiz> getQuizzes()
 	{
-		return quiz;
+		return quizzes;
 	}
 
-	public void setQuiz(Quiz quiz)
-	{
-		this.quiz = quiz;
-	}
-	
 	public Host getHost()
 	{
 		return host;
 	}
-	
+
 	public void setHost(Host host)
 	{
 		this.host = host;

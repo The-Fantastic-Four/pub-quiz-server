@@ -71,15 +71,16 @@ public class QuestionService implements QuestionServiceInt
 	}
 
 	/**
-	 * Add question to the repository
+	 * Add a new question to the database
 	 * 
 	 * @param q
-	 *            The question to be added
+	 *            the question to be added
+	 * @return The question that was inserted
 	 */
 	@Override
-	public void addQuestion(Question q)
+	public Question saveQuestion(Question q)
 	{
-		questionRepository.save(q);
+		return questionRepository.save(q);
 	}
 
 	/**

@@ -27,8 +27,9 @@ public interface QuestionServiceInt
 	 * 
 	 * @param q
 	 *            the question to be added
+	 * @return The question that was inserted
 	 */
-	public void addQuestion(Question q);
+	public Question saveQuestion(Question q);
 
 	/**
 	 * Delete question from database

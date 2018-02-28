@@ -7,14 +7,16 @@
 package is.hi.hbv601.pubquiz.model;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -50,9 +52,11 @@ public class Quiz
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
 	private int duration;
 
-	@OneToMany(mappedBy = "quiz")
+	@ManyToMany
+	@JoinTable(name = "quiz_question", joinColumns = { @JoinColumn(name = "quiz_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "question_id") })
 	@OrderBy("question_number ASC")
-	private List<Question> questions;
+	private Set<Question> questions;
 
 	@ManyToOne
 	@JoinColumn(name = "host_id")
@@ -103,9 +107,17 @@ public class Quiz
 		this.duration = duration;
 	}
 
-	public List<Question> getQuestions()
+	public Set<Question> getQuestions()
 	{
 		return questions;
+	}
+
+	public void addQuestion(Question question)
+	{
+		if (questions == null)
+			questions = new HashSet<Question>();
+
+		questions.add(question);
 	}
 
 	public Host getHost()

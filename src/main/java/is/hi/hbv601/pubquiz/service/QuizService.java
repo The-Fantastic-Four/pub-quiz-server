@@ -28,9 +28,9 @@ public class QuizService implements QuizServiceInt
 	 * @param id
 	 *            the id of the quiz to be found
 	 * @param host
-	 * 			  the host which owns the quiz
+	 *            the host which owns the quiz
 	 * @return the quiz with the given id
-	 * @throws NotFoundException 
+	 * @throws NotFoundException
 	 */
 	@Override
 	public Quiz findQuiz(long id, Host host) throws NotFoundException
@@ -41,7 +41,7 @@ public class QuizService implements QuizServiceInt
 			throw new NotFoundException("Quiz could not be found");
 		if (host == null || quiz.getHost() == null || quiz.getHost().getId() != host.getId())
 			throw new AccessDeniedException("Host did not create this quiz");
-		
+
 		return quizRepository.findOne(id);
 	}
 
@@ -52,7 +52,7 @@ public class QuizService implements QuizServiceInt
 	 *            the quiz to be added
 	 */
 	@Override
-	public void addQuiz(Quiz q, Host host)
+	public void saveQuiz(Quiz q, Host host)
 	{
 		q.setHost(host);
 		quizRepository.save(q);
