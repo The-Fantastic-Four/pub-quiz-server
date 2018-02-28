@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+	<head>
+	    <title>Pub quiz server</title>
+	</head>
+	
+	<body>
+		<h1>Welcome to the pub quiz server</h1>
+		<ul>
+			<li><a href="/quiz">My quizzes</a></li>
+			<li><a href="/register">Register</a></li>
+			<li sec:authorize="isAuthenticated()">
+				<a href="/logout">Logout</a>
+			</li>
+		</ul>
+		<div sec:authorize="isAuthenticated()">
+			<pre>
+Logged user: <span sec:authentication="name">Bob</span>
+Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
+			</pre>
+		</div>
+		<div sec:authorize="!isAuthenticated()">
+			<form th:action="@{/login}" method="post">
+		      <label for="email">Email</label>:
+		      <input type="text" id="email" name="email" autofocus="autofocus" /> <br />
+		      <label for="password">Password</label>:
+		      <input type="password" id="password" name="password" /> <br />
+		      <input type="submit" value="Log in" />
+		    </form>
+	    </div>
+	</body>
+</html>

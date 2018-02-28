@@ -4,18 +4,18 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>is.hi</groupId>
-	<artifactId>villuMedhondlun</artifactId>
+	<artifactId>pub-quiz-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>villuMedhondlun</name>
-	<description>Demo project for Spring Boot</description>
+	<name>pub-quiz-server</name>
+	<description>Server for the pub-quiz-master app</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.8.RELEASE</version>
-		<relativePath>is.hi.villuMedhondlun</relativePath> <!-- lookup parent from repository -->
+		<relativePath>is.hi.hbv601.pubquiz</relativePath> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -43,6 +43,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
 		</dependency>
 		
 		<dependency>

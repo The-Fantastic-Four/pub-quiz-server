@@ -7,13 +7,16 @@
 package is.hi.hbv601.pubquiz.model;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -24,7 +27,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "quiz")
-public class Quiz {
+public class Quiz
+{
 
 	/**
 	 * Unique identifier for the quiz
@@ -40,32 +44,29 @@ public class Quiz {
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
 	@Size(min = 1, max = 35, message = "Lengd nafns þarf að vera á bilinu 1-35")
 	private String roomName;
-	
-	//private long hostId;
 
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private Date startTime;
 
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
 	private int duration;
-	
-	/**
-	 * List of questions in this quiz
-	 */
-	@OneToMany(mappedBy = "quiz", cascade=CascadeType.REMOVE)
+
+	@ManyToMany
+	@JoinTable(name = "quiz_question", joinColumns = { @JoinColumn(name = "quiz_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "question_id") })
 	@OrderBy("question_number ASC")
-	private List<Question> questions;
-	
-	public List<Question> getQuestions()
+	private Set<Question> questions;
+
+	@ManyToOne
+	@JoinColumn(name = "host_id")
+	private Host host;
+
+	public Quiz()
 	{
-		return questions;
+
 	}
 
-	public Quiz() {
-		
-	}
-	
 	public long getId()
 	{
 		return id;
@@ -86,18 +87,6 @@ public class Quiz {
 		this.roomName = roomName;
 	}
 
-	/*
-	public long getHostId()
-	{
-		return hostId;
-	}
-
-	public void setHostId(long hostId)
-	{
-		this.hostId = hostId;
-	}
-	*/
-
 	public Date getStartTime()
 	{
 		return startTime;
@@ -116,5 +105,28 @@ public class Quiz {
 	public void setDuration(int duration)
 	{
 		this.duration = duration;
+	}
+
+	public Set<Question> getQuestions()
+	{
+		return questions;
+	}
+
+	public void addQuestion(Question question)
+	{
+		if (questions == null)
+			questions = new HashSet<Question>();
+
+		questions.add(question);
+	}
+
+	public Host getHost()
+	{
+		return host;
+	}
+
+	public void setHost(Host host)
+	{
+		this.host = host;
 	}
 }

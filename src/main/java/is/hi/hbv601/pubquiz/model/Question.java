@@ -6,12 +6,14 @@
  */
 package is.hi.hbv601.pubquiz.model;
 
-import javax.persistence.CascadeType;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -19,10 +21,11 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "question")
-public class Question {
+public class Question
+{
 
 	/**
-	 * Unique identifier for the quiz
+	 * Unique identifier for the question
 	 */
 	@Id
 	@GeneratedValue(generator = "increment")
@@ -30,24 +33,30 @@ public class Question {
 	private long id;
 
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
-    private String question;
+	private String question;
 
-    private long question_number;
+	private long question_number;
 
-    private long total_questions;
+	private long total_questions;
 
-    private String question_type;
-    
-    private boolean isPrivate;
+	private String question_type;
+
+	private boolean isPrivate = true;
+
+	@ManyToMany(mappedBy = "questions")
+	private Set<Quiz> quizzes;
 
 	@ManyToOne
-	@JoinColumn(name = "quiz_id")
-	private Quiz quiz;
+	@JoinColumn(name = "host_id")
+	private Host host;
 
-	public Question() {
+	public Question()
+	{
 	}
 
-	public Question(long id, String question, long question_number, long total_questions, String question_type, boolean isPrivate) {
+	public Question(long id, String question, long question_number, long total_questions, String question_type,
+			boolean isPrivate)
+	{
 		this.id = id;
 		this.question = question;
 		this.question_number = question_number;
@@ -106,24 +115,29 @@ public class Question {
 		this.question_type = question_type;
 	}
 
-	public boolean getIsPrivate() 
+	public boolean getIsPrivate()
 	{
 		return this.isPrivate;
 	}
-	
+
 	public void setIsPrivate(boolean isPrivate)
 	{
 		this.isPrivate = isPrivate;
 	}
-	
-	public Quiz getQuiz()
+
+	public Set<Quiz> getQuizzes()
 	{
-		return quiz;
+		return quizzes;
 	}
 
-	public void setQuiz(Quiz quiz)
+	public Host getHost()
 	{
-		this.quiz = quiz;
+		return host;
+	}
+
+	public void setHost(Host host)
+	{
+		this.host = host;
 	}
 
 }

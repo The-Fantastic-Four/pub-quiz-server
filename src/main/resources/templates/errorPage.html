@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+  <head>
+    <title>An unexpected error occurred</title>
+  </head>
+  <body>
+  	<h1>An unexpected error occurred</h1>
+    <h2 th:text="${attrs.message}"></h2>
+    <p>Unfortunately an unexpected error has occurred, I hope you aren't running a quiz right now.</p>
+  </body>
+</html>

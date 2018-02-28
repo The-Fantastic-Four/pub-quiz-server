@@ -10,24 +10,17 @@
 		<form action="#" th:action="@{'/quiz/' + ${quiz.id} + '/addQuestion'}" th:object="${newQuestion}" method="post">
 			<input type="hidden" th:field="*{id}" />
 			<input type="hidden" th:field="*{total_questions}" />
-			<input type="hidden" th:field="*{quiz}" />
-			<div>
-				<label for="roomName">Númer spurningar</label>
-				<input type="number" th:field="*{question_number}" />
-			</div>
-			<div>
-				<label for="startTime">Tegund spurningar</label>
-				<input type="text" th:field="*{question_type}" />
-			</div>
+			<input type="hidden" th:field="*{question_number}" />
+			<input type="hidden" th:field="*{question_type}" />
 			<div>
 				<label for="duration">Spurning</label>
 				<textarea rows="24" cols="80" th:field="*{question}"></textarea>
 			</div>
 			<div>
-				<label for="isPrivate">Sýnileiki (geta aðrir valið að nota þessa spurningu í framtíðinni í sínu quizi)</label>
+				<label for="isPrivate">Sýnileiki</label>
 				<select th:field="*{isPrivate}">
-					<option value="false">Almennings aðgangur</option>
-					<option value="true">Persónulegur aðgangur</option>
+					<option value="true" selected="selected">aðeins fyrir mig</option>
+					<option value="false">spurningabankinn</option>
 				</select>
 			</div>
 			<div>

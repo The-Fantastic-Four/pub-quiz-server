@@ -1,42 +1,60 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      th:with="lang=${#locale.language}" th:lang="${lang}">
-	<head>
-	    <title>Quiz</title>
-	</head>
-	
-	<body>
-		<h1>Quiz</h1>
-		<h2>Spurningar</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>Auðkenni</th>
-					<th>Númer</th>
-					<th>Tegund</th>
-					<th>Spurning</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="question: ${quiz.questions}">
-					<td th:text="${question.id}">0</td>
-					<td th:text="${question.question_number}">3</td>
-					<td th:text="${question.question_type}">blank</td>
-					<td th:text="${question.question}">How?</td>
-					<td>
-						<form action="#" th:action="@{'/quiz/' + ${quiz.id} + '/question/' + ${question.id}}" th:method="delete">
-							<button type="submit">Eyða</button>
-						</form>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<!--form action="#" th:action="@{'/quiz/' + ${quiz.id} + '/addQuestion'}" th:method="post">
-			<button type="submit">Bæta við spurningu</button>
-		</form-->
-		<a th:href="@{'/quiz/' + ${quiz.id} + '/addQuestion'}">Ný spurning</a>
-		<a th:href="@{'/quiz/' + ${quiz.id} + '/addCreatedQuestion'}">Ný tilbúin spurning</a>
-		<a th:href="@{'/quiz/'}">Til baka í quiz lista</a>
-	</body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}"
+	th:lang="${lang}">
+<head>
+<title>Quiz</title>
+</head>
+
+<body>
+	<h1>Quiz</h1>
+	<h2>Spurningar</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Spurning</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="question: ${quiz.questions}">
+				<td th:text="${question.question}">How?</td>
+				<td>
+					<form action="#"
+						th:action="@{'/quiz/' + ${quiz.id} + '/question/' + ${question.id}}"
+						th:method="delete">
+						<button type="submit">Eyða</button>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<hr />
+
+	<form th:action="@{'/quiz/' + ${quiz.id} + '/addExistingQuestion'}"
+		method="post">
+		<label for="question">Bæta spurningu við</label> <select
+			name="questionId">
+			<th:block th:switch="${privateList.isEmpty()}">
+				<optgroup th:case="false" label="Mínar spurningar">
+					<th:block th:each="q : ${privateList}">
+						<option th:value="${q.id}" th:text="${q.question}"></option>
+					</th:block>
+				</optgroup>
+			</th:block>
+			<optgroup label="Spurningabankinn">
+				<th:block th:each="q : ${publicList}">
+					<option th:value="${q.id}" th:text="${q.question}"></option>
+				</th:block>
+			</optgroup>
+		</select>
+		<button type="submit">Bæta við</button>
+	</form>
+	<hr />
+
+	<a th:href="@{'/quiz/' + ${quiz.id} + '/addQuestion'}">Skrifa nýja
+		spurningu</a>
+	<!--a th:href="@{'/quiz/' + ${quiz.id} + '/addCreatedQuestion'}">Ný tilbúin spurning</a -->
+	<a th:href="@{'/quiz/'}">Til baka í quiz lista</a>
+</body>
 </html>

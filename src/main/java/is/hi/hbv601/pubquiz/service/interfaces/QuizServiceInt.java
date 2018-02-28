@@ -1,38 +1,41 @@
 /**
  * Interface for a service for getting, and deleting quizzes
+ * 
  * @author Viktor Alex Brynjarsson vab18@hi.is
  * @date 13. feb. 2017
  */
 package is.hi.hbv601.pubquiz.service.interfaces;
 
-import java.util.List;
-
+import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Quiz;
+import javassist.NotFoundException;
 
 public interface QuizServiceInt
 {
 	/**
-	 * Fetches all quizzes in the database
-	 * @return list of all the quizzes
-	 */
-	public List<Quiz> allQuizzes();
-	
-	/**
 	 * Finds quiz by it's id
-	 * @param id id of the quiz to be found
+	 * 
+	 * @param id
+	 *            id of the quiz to be found
+	 * @param host
+	 *            the host which owns the quiz
 	 * @return the quiz that was found
 	 */
-	public Quiz findQuiz(long id);
-	
+	public Quiz findQuiz(long id, Host host) throws NotFoundException;
+
 	/**
 	 * Add a new quiz to the database
-	 * @param q the quiz to be added
+	 * 
+	 * @param q
+	 *            the quiz to be added
 	 */
-	public void addQuiz(Quiz q);
-	
+	public void saveQuiz(Quiz q, Host host);
+
 	/**
 	 * Delete quiz from database
-	 * @param id id of the quiz to be deleted
+	 * 
+	 * @param id
+	 *            id of the quiz to be deleted
 	 */
 	public void deleteQuiz(long id);
 }

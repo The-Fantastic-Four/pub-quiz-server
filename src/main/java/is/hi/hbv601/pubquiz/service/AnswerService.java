@@ -13,24 +13,29 @@ import is.hi.hbv601.pubquiz.model.ReceivedAnswer;
 import is.hi.hbv601.pubquiz.service.interfaces.AnswerServiceInt;
 
 @Service
-public class AnswerService implements AnswerServiceInt{
-	public boolean saveAnswer(ReceivedAnswer data) {
+public class AnswerService implements AnswerServiceInt
+{
+	public boolean saveAnswer(ReceivedAnswer data)
+	{
 		boolean valid = true;
-		//TODO: Check if the JSON string is correct. 
-		if(valid) {
+		// TODO: Check if the JSON string is correct.
+		if (valid)
+		{
 			saveData(data);
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Saves the data.
 	 * 
-	 * @param data The data to be saved.
+	 * @param data
+	 *            The data to be saved.
 	 */
-	private void saveData(ReceivedAnswer data) {
-		//TODO: Save into database.
+	private void saveData(ReceivedAnswer data)
+	{
+		// TODO: Save into database.
 		System.out.println("====================");
 		System.out.println(data.getAnswer());
 		System.out.println("Saving to DB");
