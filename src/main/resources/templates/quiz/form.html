@@ -9,6 +9,7 @@
 		<h1>New Quiz</h1>
 		<form action="#" th:action="@{/quiz/new}" th:object="${quiz}" method="post">
 			<input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:field="*{currentQuestionNumber}" />
 			<div>
 				<label for="roomName">Skráningarheiti</label>
 				<input type="text" th:field="*{roomName}" />

@@ -11,6 +11,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import is.hi.hbv601.pubquiz.model.Host;
+import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.repository.QuizRepository;
 import is.hi.hbv601.pubquiz.service.interfaces.QuizServiceInt;
@@ -68,6 +69,26 @@ public class QuizService implements QuizServiceInt
 	public void deleteQuiz(long id)
 	{
 		quizRepository.delete(id);
+	}
+	
+	
+	@Override
+	public Question fetchQuestion(long quizId) throws NotFoundException {
+		//TODO: Discuss whether it should throw an exception when no question is being asked.
+		Quiz quiz = findQuizById(quizId);
+		Question question = quiz.getQuestions().get(quiz.getCurrentQuestionNumber());
+		return question;
+	}
+
+	@Override
+	public Quiz findQuizById(long quizId) throws NotFoundException
+	{
+		Quiz quiz = quizRepository.findOne(quizId);
+
+		if (quiz == null)
+			throw new NotFoundException("Quiz could not be found");
+
+		return quizRepository.findOne(quizId);
 	}
 
 }

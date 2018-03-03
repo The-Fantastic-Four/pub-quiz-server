@@ -250,4 +250,26 @@ public class QuizController
 
 		return new ModelAndView("redirect:/quiz/" + quizId);
 	}
+	
+	/**
+	 * Increments the counter for the quiz that identifies what question is currently being asked.
+	 * 
+	 * @param quizId The Id of the quiz in question.
+	 * @param model
+	 * @param authentication The authentication class
+	 * @return Incrementation of the current question counter within the quiz and a return to the quiz display.
+	 * @throws NotFoundException
+	 */
+	@RequestMapping(value = "/{quizId}/incrementCurrentQuestion", method = RequestMethod.GET)
+	public ModelAndView incrementCurrentQuestionNumber(@PathVariable(value = "quizId") long quizId, Model model,
+			Authentication authentication) throws NotFoundException
+	{
+		Host host = hostService.findHostByEmail(authentication.getName());
+		Quiz quiz = quizService.findQuiz(quizId, host);
+
+		quiz.incrementCurrentQuestionNumber();
+		quizService.saveQuiz(quiz, host);
+		
+		return new ModelAndView("redirect:/quiz/"+ quizId);
+	}
 }

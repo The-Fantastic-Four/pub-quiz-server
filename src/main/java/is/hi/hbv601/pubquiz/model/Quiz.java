@@ -2,13 +2,13 @@
  * Represents a quiz
  * 
  * @author Viktor Alex Brynjarsson vab18@hi.is
- * @date 13. feb. 2018
+ * @date 3. march. 2018
  */
 package is.hi.hbv601.pubquiz.model;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -56,15 +56,17 @@ public class Quiz
 	@JoinTable(name = "quiz_question", joinColumns = { @JoinColumn(name = "quiz_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "question_id") })
 	@OrderBy("question_number ASC")
-	private Set<Question> questions;
+	private List<Question> questions;
 
+	private int currentQuestionNumber;
+	
 	@ManyToOne
 	@JoinColumn(name = "host_id")
 	private Host host;
 
 	public Quiz()
 	{
-
+		currentQuestionNumber = 0;
 	}
 
 	public long getId()
@@ -107,7 +109,7 @@ public class Quiz
 		this.duration = duration;
 	}
 
-	public Set<Question> getQuestions()
+	public List<Question> getQuestions()
 	{
 		return questions;
 	}
@@ -115,7 +117,7 @@ public class Quiz
 	public void addQuestion(Question question)
 	{
 		if (questions == null)
-			questions = new HashSet<Question>();
+			questions = new ArrayList<Question>();
 
 		questions.add(question);
 	}
@@ -128,5 +130,17 @@ public class Quiz
 	public void setHost(Host host)
 	{
 		this.host = host;
+	}
+
+	public int getCurrentQuestionNumber() {
+		return currentQuestionNumber;
+	}
+
+	/**
+	 * Increments the currentQuestionNumber
+	 */
+	public void incrementCurrentQuestionNumber() {
+		if(questions.size() > currentQuestionNumber)
+			this.currentQuestionNumber++;
 	}
 }

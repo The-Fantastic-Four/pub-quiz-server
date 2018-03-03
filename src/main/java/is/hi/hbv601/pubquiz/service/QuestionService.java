@@ -7,7 +7,6 @@
 
 package is.hi.hbv601.pubquiz.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class QuestionService implements QuestionServiceInt
 		}
 		// TODO: Consider how to handle if the data for fetching the question is not
 		// valid.
-		return new Question(0, "This request is not valid", 0, 0, "invalid", false);
+		return new Question(0, "This request is not valid", 0, "invalid", false);
 	}
 
 	/**
@@ -77,7 +76,7 @@ public class QuestionService implements QuestionServiceInt
 	private Question getQuestion(FetchQuestionWrapper w)
 	{
 		// TODO: Fetch the question and return it.
-		Question q = new Question(0, "Are pancakes delicious?", 4, 10, "text", false);
+		Question q = new Question(0, "Are pancakes delicious?", 4, "text", false);
 		System.out.println("====================");
 		System.out.println(q.getQuestion());
 		System.out.println("Returning Question");

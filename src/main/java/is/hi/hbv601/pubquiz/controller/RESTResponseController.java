@@ -2,7 +2,7 @@
  * RESTResponseController reacts to JSON requests.
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
- * @date 15. feb. 2018
+ * @date 3. march. 2018
  */
 
 package is.hi.hbv601.pubquiz.controller;
@@ -22,7 +22,9 @@ import is.hi.hbv601.pubquiz.model.ReceivedAnswer;
 import is.hi.hbv601.pubquiz.model.Team;
 import is.hi.hbv601.pubquiz.service.interfaces.AnswerServiceInt;
 import is.hi.hbv601.pubquiz.service.interfaces.QuestionServiceInt;
+import is.hi.hbv601.pubquiz.service.interfaces.QuizServiceInt;
 import is.hi.hbv601.pubquiz.service.interfaces.TeamServiceInt;
+import javassist.NotFoundException;
 
 @RestController
 public class RESTResponseController
@@ -33,6 +35,9 @@ public class RESTResponseController
 
 	@Autowired
 	QuestionServiceInt questionService;
+	
+	@Autowired
+	QuizServiceInt quizService;
 
 	@Autowired
 	TeamServiceInt teamService;
@@ -62,12 +67,15 @@ public class RESTResponseController
 	 * @param jsonString
 	 *            The JSON string received.
 	 * @return Question related to data given.
+	 * @throws NotFoundException 
 	 */
 	@RequestMapping(value = "/api/question", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Question fetchQuestion(@RequestBody FetchQuestionWrapper jsonString)
+	public @ResponseBody Question fetchQuestion(@RequestBody FetchQuestionWrapper jsonString) throws NotFoundException
 	{
+		//TODO: Discuss whether we want to send quizId via JSON or just have it in the URL and send over the phoneId for validation.
+		//TODO: Add phoneId validation
 		System.out.println(jsonString);
-		return questionService.getQuestionFromQuiz(jsonString);
+		return quizService.fetchQuestion(jsonString.getQuiz_id());
 	}
 
 	/**
