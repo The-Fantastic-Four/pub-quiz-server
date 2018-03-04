@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import is.hi.hbv601.pubquiz.model.NewTeamReturn;
+import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.model.Team;
 import is.hi.hbv601.pubquiz.service.interfaces.TeamServiceInt;
 
@@ -82,7 +83,8 @@ public class TeamService implements TeamServiceInt
 	private NewTeamReturn createRegisteredTeam(Team t)
 	{
 		// TODO: Get required data from database and fill in.
-		return new NewTeamReturn(103, "Tveir á kantinum", 60, "eede877b-7741-4dec-a6a4-3b7d9b06bc5c");
+		Quiz quiz = new Quiz();
+		return new NewTeamReturn(103, "Tveir á kantinum", quiz, "eede877b-7741-4dec-a6a4-3b7d9b06bc5c");
 	}
 
 	/**

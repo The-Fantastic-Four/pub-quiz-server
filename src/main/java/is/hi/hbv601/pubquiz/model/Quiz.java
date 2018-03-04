@@ -8,8 +8,11 @@ package is.hi.hbv601.pubquiz.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -57,6 +61,9 @@ public class Quiz
 			@JoinColumn(name = "question_id") })
 	@OrderBy("question_number ASC")
 	private List<Question> questions;
+	
+	@OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
+	private Set<NewTeamReturn> teams;
 
 	private int currentQuestionNumber;
 	
@@ -142,5 +149,18 @@ public class Quiz
 	public void incrementCurrentQuestionNumber() {
 		if(questions.size() > currentQuestionNumber)
 			this.currentQuestionNumber++;
+	}
+	
+	public Set<NewTeamReturn> getTeams()
+	{
+		return teams;
+	}
+
+	public void addTeam(NewTeamReturn team)
+	{
+		if (teams == null)
+			teams = new HashSet<NewTeamReturn>();
+
+		teams.add(team);
 	}
 }

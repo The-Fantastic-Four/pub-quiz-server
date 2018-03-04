@@ -7,18 +7,42 @@
 
 package is.hi.hbv601.pubquiz.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "team")
 public class NewTeamReturn
 {
-	private final long id;
-	private final String team_name;
-	private final long quiz_id;
-	private final String phone_id;
+	/**
+	 * Unique identifier for the question
+	 */
+	@Id
+	@GeneratedValue(generator = "increment")
+	@GenericGenerator(name = "increment", strategy = "increment")
+	private long id;
+	
+	@NotNull(message = "Þessi reitur má ekki vera tómur.")
+	private String team_name;
+	
+	@ManyToOne
+	@JoinColumn(name = "quiz_id")
+	private Quiz quiz;
+	
+	private String phone_id;
 
-	public NewTeamReturn(long id, String team_name, long quiz_id, String phone_id)
+	public NewTeamReturn(long id, String team_name, Quiz quiz, String phone_id)
 	{
 		this.id = id;
 		this.team_name = team_name;
-		this.quiz_id = quiz_id;
+		this.quiz = quiz;
 		this.phone_id = phone_id;
 	}
 
@@ -32,9 +56,9 @@ public class NewTeamReturn
 		return team_name;
 	}
 
-	public long getQuiz_id()
+	public Quiz getQuiz()
 	{
-		return quiz_id;
+		return quiz;
 	}
 
 	public String getPhone_id()
