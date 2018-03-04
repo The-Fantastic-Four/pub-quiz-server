@@ -36,7 +36,7 @@ public class NewTeamReturn
 	@JoinColumn(name = "quiz_id")
 	private Quiz quiz;
 	
-	private String phone_id;
+	private String phoneId;
 
 	public NewTeamReturn()
 	{
@@ -47,7 +47,7 @@ public class NewTeamReturn
 	{
 		this.team_name = team_name;
 		this.quiz = quiz;
-		this.phone_id = phone_id;
+		this.phoneId = phone_id;
 	}
 
 	public long getId()
@@ -67,7 +67,7 @@ public class NewTeamReturn
 
 	public String getPhone_id()
 	{
-		return phone_id;
+		return phoneId;
 	}
 
 }

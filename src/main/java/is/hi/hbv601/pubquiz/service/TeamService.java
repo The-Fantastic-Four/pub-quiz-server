@@ -2,7 +2,7 @@
  * TeamService is an implementation of the TeamServiceInt
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
- * @date 11. feb. 2018
+ * @date 4. mar. 2018
  */
 
 package is.hi.hbv601.pubquiz.service;
@@ -115,4 +115,8 @@ public class TeamService implements TeamServiceInt
 		return mapper.writeValueAsString(t);
 	}
 	
+	public boolean doesPhoneIdExistForQuiz(String phoneId, Quiz q) 
+	{
+		return teamRepository.countByPhoneIdAndQuiz(phoneId, q) > 0;
+	}
 }

@@ -2,11 +2,12 @@
  * RESTResponseController reacts to JSON requests.
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
- * @date 3. march. 2018
+ * @date 4. mar. 2018
  */
 
 package is.hi.hbv601.pubquiz.controller;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,6 @@ public class RESTResponseController
 	@RequestMapping(value = "/api/answer", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody ResponseEntity<HttpStatus> saveAnswer(@RequestBody ReceivedAnswer jsonString)
 	{
-		System.out.println(jsonString);
 		boolean result = answerService.saveAnswer(jsonString);
 		if (result)
 		{
@@ -71,14 +71,16 @@ public class RESTResponseController
 	 *            The JSON string received.
 	 * @return Question related to data given.
 	 * @throws NotFoundException 
+	 * @throws AccessDeniedException 
 	 */
 	@RequestMapping(value = "/api/question", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Question fetchQuestion(@RequestBody FetchQuestionWrapper jsonString) throws NotFoundException
+	public @ResponseBody Question fetchQuestion(@RequestBody FetchQuestionWrapper jsonString) throws NotFoundException, AccessDeniedException
 	{
 		//TODO: Discuss whether we want to send quizId via JSON or just have it in the URL and send over the phoneId for validation.
-		//TODO: Add phoneId validation
-		System.out.println(jsonString);
-		return quizService.fetchQuestion(jsonString.getQuiz_id());
+		Quiz quiz = quizService.findQuizById(jsonString.getQuiz_id());
+		if(teamService.doesPhoneIdExistForQuiz(jsonString.getPhone_id(), quiz))
+			return quizService.fetchQuestion(jsonString.getQuiz_id());
+		throw new AccessDeniedException("You do not have access to this quiz's questions.");
 	}
 
 	/**
@@ -92,9 +94,8 @@ public class RESTResponseController
 	@RequestMapping(value = "/api/register_team", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody ResponseEntity<?> registerTeam(@RequestBody Team jsonString)
 	{
-		System.out.println(jsonString);
 		List<Quiz> quizzes = quizService.findByRoomName(jsonString.getRoom_name());
-		String resultString = teamService.registerTeam(jsonString, relevantQuiz(quizzes));
+		String resultString = teamService.registerTeam(jsonString, activeQuiz(quizzes));
 		
 		if (resultString.isEmpty())
 		{
@@ -110,7 +111,7 @@ public class RESTResponseController
 	 * @param quizzes The list to be checked.
 	 * @return The quiz that is active.
 	 */
-	private Quiz relevantQuiz(List<Quiz> quizzes) {
+	private Quiz activeQuiz(List<Quiz> quizzes) {
 		//TODO: Check which quiz with the given room name is currently active.
 		return quizzes.get(0);
 	}

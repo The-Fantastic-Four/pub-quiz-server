@@ -79,6 +79,9 @@ public class QuizService implements QuizServiceInt
 		//TODO: Discuss whether it should throw an exception when no question is being asked.
 		Quiz quiz = findQuizById(quizId);
 		Question question = quiz.getQuestions().get(quiz.getCurrentQuestionNumber());
+		System.out.println("*****************************");
+		System.out.println(question.getQuestion());
+		System.out.println("*****************************");
 		return question;
 	}
 

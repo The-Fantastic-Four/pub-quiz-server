@@ -22,4 +22,13 @@ public interface TeamServiceInt
 	 * @return Relevant JSON string if successful; Empty JSON string if it fails.
 	 */
 	public String registerTeam(Team t, Quiz q);
+	
+	/**
+	 * Checks whether the phoneId exists within given quiz.
+	 * 
+	 * @param phoneId The phoneId to be checked for.
+	 * @param q The quiz to be checked within.
+	 * @return true if phoneId exists; false if it doesn't.
+	 */
+	public boolean doesPhoneIdExistForQuiz(String phoneId, Quiz q);
 }

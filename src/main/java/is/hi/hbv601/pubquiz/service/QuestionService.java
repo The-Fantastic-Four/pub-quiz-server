@@ -48,7 +48,7 @@ public class QuestionService implements QuestionServiceInt
 		}
 		// TODO: Consider how to handle if the data for fetching the question is not
 		// valid.
-		return new Question(0, "This request is not valid", 0, "invalid", false);
+		return new Question("This request is not valid", 0, "invalid", false);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class QuestionService implements QuestionServiceInt
 	private Question getQuestion(FetchQuestionWrapper w)
 	{
 		// TODO: Fetch the question and return it.
-		Question q = new Question(0, "Are pancakes delicious?", 4, "text", false);
+		Question q = new Question("Are pancakes delicious?", 4, "text", false);
 		System.out.println("====================");
 		System.out.println(q.getQuestion());
 		System.out.println("Returning Question");
@@ -134,7 +134,7 @@ public class QuestionService implements QuestionServiceInt
 	 * 
 	 * @param question
 	 *            The question that is meant to be checked for.
-	 * @return true if question exists; False if it doesn't.
+	 * @return true if question exists; false if it doesn't.
 	 */
 	public boolean doesQuestionExist(Question question)
 	{

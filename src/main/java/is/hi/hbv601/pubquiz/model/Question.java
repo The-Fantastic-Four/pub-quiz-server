@@ -52,9 +52,8 @@ public class Question
 	{
 	}
 
-	public Question(long id, String question, long question_number, String question_type, boolean isPrivate)
+	public Question(String question, long question_number, String question_type, boolean isPrivate)
 	{
-		this.id = id;
 		this.question = question;
 		this.question_number = question_number;
 		this.question_type = question_type;
