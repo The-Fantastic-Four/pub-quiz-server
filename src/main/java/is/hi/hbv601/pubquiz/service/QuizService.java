@@ -6,6 +6,8 @@
  */
 package is.hi.hbv601.pubquiz.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -90,5 +92,11 @@ public class QuizService implements QuizServiceInt
 
 		return quizRepository.findOne(quizId);
 	}
-
+	
+	@Override
+	public List<Quiz> findByRoomName(String roomName)
+	{
+		return quizRepository.findAllByRoomName(roomName);
+	}
+	
 }

@@ -8,6 +8,7 @@
 
 package is.hi.hbv601.pubquiz.service.interfaces;
 
+import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.model.Team;
 
 public interface TeamServiceInt
@@ -20,5 +21,5 @@ public interface TeamServiceInt
 	 *            The team to register.
 	 * @return Relevant JSON string if successful; Empty JSON string if it fails.
 	 */
-	public String registerTeam(Team t);
+	public String registerTeam(Team t, Quiz q);
 }

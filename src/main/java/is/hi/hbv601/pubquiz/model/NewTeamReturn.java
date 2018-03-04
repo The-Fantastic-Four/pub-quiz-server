@@ -38,9 +38,13 @@ public class NewTeamReturn
 	
 	private String phone_id;
 
-	public NewTeamReturn(long id, String team_name, Quiz quiz, String phone_id)
+	public NewTeamReturn()
 	{
-		this.id = id;
+		
+	}
+	
+	public NewTeamReturn(String team_name, Quiz quiz, String phone_id)
+	{
 		this.team_name = team_name;
 		this.quiz = quiz;
 		this.phone_id = phone_id;

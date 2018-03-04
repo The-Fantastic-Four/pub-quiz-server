@@ -7,6 +7,8 @@
 
 package is.hi.hbv601.pubquiz.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
 import is.hi.hbv601.pubquiz.model.Question;
+import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.model.ReceivedAnswer;
 import is.hi.hbv601.pubquiz.model.Team;
 import is.hi.hbv601.pubquiz.service.interfaces.AnswerServiceInt;
@@ -90,12 +93,26 @@ public class RESTResponseController
 	public @ResponseBody ResponseEntity<?> registerTeam(@RequestBody Team jsonString)
 	{
 		System.out.println(jsonString);
-		String resultString = teamService.registerTeam(jsonString);
+		List<Quiz> quizzes = quizService.findByRoomName(jsonString.getRoom_name());
+		String resultString = teamService.registerTeam(jsonString, relevantQuiz(quizzes));
+		
 		if (resultString.isEmpty())
 		{
 			return new ResponseEntity<HttpStatus>(HttpStatus.FORBIDDEN);
 		}
+		System.out.println(resultString);
 		return new ResponseEntity<String>(resultString, HttpStatus.CREATED);
+	}
+	
+	/**
+	 * Checks what quiz is currently active from the given list of quizzes.
+	 * 
+	 * @param quizzes The list to be checked.
+	 * @return The quiz that is active.
+	 */
+	private Quiz relevantQuiz(List<Quiz> quizzes) {
+		//TODO: Check which quiz with the given room name is currently active.
+		return quizzes.get(0);
 	}
 
 }

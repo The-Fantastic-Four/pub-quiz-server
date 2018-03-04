@@ -6,6 +6,8 @@
  */
 package is.hi.hbv601.pubquiz.service.interfaces;
 
+import java.util.List;
+
 import is.hi.hbv601.pubquiz.model.Host;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.Quiz;
@@ -58,4 +60,11 @@ public interface QuizServiceInt
 	 */
 	public Quiz findQuizById(long quizId) throws NotFoundException;
 	
+	/**
+	 * Fetches all quizzes containing the given room name.
+	 * 
+	 * @param roomName The name to be looked for.
+	 * @return List of all quizzes containing the given room name.
+	 */
+	public List<Quiz> findByRoomName(String roomName);
 }

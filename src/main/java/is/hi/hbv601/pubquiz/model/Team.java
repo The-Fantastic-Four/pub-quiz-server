@@ -14,9 +14,8 @@ public class Team
 	private String team_name;
 	private String phone_id;
 
-	public Team(long id, String room_name, String team_name, String phone_id)
+	public Team(String room_name, String team_name, String phone_id)
 	{
-		this.id = id;
 		this.room_name = room_name;
 		this.team_name = team_name;
 		this.phone_id = phone_id;
