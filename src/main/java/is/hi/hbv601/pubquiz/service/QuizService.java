@@ -102,4 +102,9 @@ public class QuizService implements QuizServiceInt
 		return quizRepository.findAllByRoomName(roomName);
 	}
 	
+	@Override
+	public List<Quiz> findPublished()
+	{
+		return quizRepository.findAllByIsPublishedTrue();
+	}
 }

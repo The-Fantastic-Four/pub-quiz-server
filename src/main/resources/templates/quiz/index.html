@@ -25,6 +25,7 @@
 					<td th:text="${quiz.startTime}">2004</td>
 					<td th:text="${quiz.duration}">24</td>
 					<td th:text="${#lists.size(quiz.questions)}">0</td>
+					<td th:if="${not quiz.isPublished and not quiz.isDuplicate}"><a th:href="@{'/quiz/' + ${quiz.id} + '/publishQuiz'}">Gefa út</a></td>
 					<td>
 						<form action="#" th:action="@{'/quiz/' + ${quiz.id}}" th:method="delete">
 							<button type="submit">Eyða</button>
@@ -33,6 +34,28 @@
 				</tr>
 			</tbody>
 		</table>
+		
+		<hr />
+		<form th:if="${not publishedQuizzes.isEmpty()}" th:action="@{'/quiz/addExistingQuiz'}"
+			method="post">
+			<label for="publishedQuizId">Bæta Quiz við: </label> 
+			<select name="publishedQuizId">
+				<optgroup label="Quizbankinn">
+					<th:block th:each="quiz : ${publishedQuizzes}">
+						<option th:value="${quiz.id}" th:text="${quiz.roomName}"></option>
+					</th:block>
+				</optgroup>
+			</select>
+			
+			<label for="startTime">Upphafstími</label>
+			<input name="startTime" type="datetime-local"/>
+			
+			<label for="duration">Tímalengd</label>
+			<input name="duration" type="number"/>
+			
+			<button type="submit">Bæta við</button>
+		</form>
+		
 		<a href="/quiz/new">Nýtt quiz</a>
 	</body>
 </html>

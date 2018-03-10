@@ -67,4 +67,11 @@ public interface QuizServiceInt
 	 * @return List of all quizzes containing the given room name.
 	 */
 	public List<Quiz> findByRoomName(String roomName);
+	
+	/**
+	 * Fetches all quizzes that have been published.
+	 * 
+	 * @return List of all published quizzes.
+	 */
+	public List<Quiz> findPublished();
 }

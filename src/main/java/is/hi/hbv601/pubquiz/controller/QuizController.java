@@ -7,6 +7,7 @@
  */
 package is.hi.hbv601.pubquiz.controller;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +57,8 @@ public class QuizController
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
 		model.addAttribute("quizzes", host.getQuizzes());
-
+		model.addAttribute("publishedQuizzes", quizService.findPublished());
+		
 		return new ModelAndView("quiz/index");
 	}
 
@@ -256,7 +259,7 @@ public class QuizController
 	 * 
 	 * @param quizId The Id of the quiz in question.
 	 * @param model
-	 * @param authentication The authentication class
+	 * @param authentication The authentication class.
 	 * @return Incrementation of the current question counter within the quiz and a return to the quiz display.
 	 * @throws NotFoundException
 	 */
@@ -272,4 +275,74 @@ public class QuizController
 		
 		return new ModelAndView("redirect:/quiz/"+ quizId);
 	}
+	
+	/**
+	 * Publishes the quiz so others can use it as a predefined quiz.
+	 * 
+	 * @param quizId The id of the quiz in question.
+	 * @param model
+	 * @param authentication The authentication class.
+	 * @return The list of quizzes view.
+	 * @throws NotFoundException
+	 */
+	@RequestMapping(value = "/{quizId}/publishQuiz", method = RequestMethod.GET)
+	public ModelAndView publishQuiz(@PathVariable(value = "quizId") long quizId, Model model, 
+			Authentication authentication) throws NotFoundException
+	{
+		Host host = hostService.findHostByEmail(authentication.getName());
+		Quiz quiz = quizService.findQuiz(quizId, host);
+		
+		quiz.setIsPublished(true);
+		quizService.saveQuiz(quiz, host);		
+		
+		model.addAttribute("quizzes", host.getQuizzes());
+		model.addAttribute("publishedQuizzes", quizService.findPublished());
+		
+		return new ModelAndView("redirect:/quiz/");
+	}
+	
+	/**
+	 * Adds an existing quiz to list of own quizzes to host.
+	 * 
+	 * @param publishedQuizId The id of the quiz to be added.
+	 * @param model
+	 * @param authentication The authentication object.
+	 * @return The list of quizzes view.
+	 * @throws NotFoundException
+	 */
+	@RequestMapping(value = "/addExistingQuiz", method = RequestMethod.POST)
+	public ModelAndView addExistingQuiz(long publishedQuizId, String startTime, int duration, Model model, 
+			Authentication authentication) throws NotFoundException
+	{
+		
+		if (StringUtils.countOccurrencesOf(startTime, ":") == 1) {
+			startTime += ":00";
+		}
+		Timestamp newStartTimeString = Timestamp.valueOf(startTime.replace("T", " "));
+		
+		System.out.println(publishedQuizId);
+		System.out.println(newStartTimeString);
+		System.out.println(duration);
+		
+		Host host = hostService.findHostByEmail(authentication.getName());
+		Quiz originalQuiz = quizService.findQuizById(publishedQuizId);
+		
+		Quiz newQuiz = new Quiz();
+		newQuiz.setRoomName(originalQuiz.getRoomName()+"By"+originalQuiz.getHost().getName());
+		newQuiz.setDuration(duration);
+		newQuiz.setStartTime(newStartTimeString);
+		for(Question question : originalQuiz.getQuestions()) {
+			newQuiz.addQuestion(question);
+		}
+		newQuiz.setHost(host);
+		newQuiz.setIsDuplicate(true);
+		newQuiz.setIsPublished(false);
+		
+		System.out.println("before");
+		quizService.saveQuiz(newQuiz, host);
+		System.out.println("after");
+		
+		return new ModelAndView("redirect:/quiz/");
+	}
+	
 }
