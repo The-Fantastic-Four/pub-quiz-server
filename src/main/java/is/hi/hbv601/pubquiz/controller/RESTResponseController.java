@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
-import is.hi.hbv601.pubquiz.model.NewTeamReturn;
+import is.hi.hbv601.pubquiz.model.Team;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.model.ReceivedAnswer;
-import is.hi.hbv601.pubquiz.model.Team;
+import is.hi.hbv601.pubquiz.model.ReceivedTeam;
 import is.hi.hbv601.pubquiz.service.interfaces.AnswerServiceInt;
 import is.hi.hbv601.pubquiz.service.interfaces.QuestionServiceInt;
 import is.hi.hbv601.pubquiz.service.interfaces.QuizServiceInt;
@@ -93,10 +93,10 @@ public class RESTResponseController
 	 * @throws AccessDeniedException 
 	 */
 	@RequestMapping(value = "/api/register_team", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody NewTeamReturn registerTeam(@RequestBody Team jsonString) throws AccessDeniedException
+	public @ResponseBody Team registerTeam(@RequestBody ReceivedTeam jsonString) throws AccessDeniedException
 	{
 		List<Quiz> quizzes = quizService.findByRoomName(jsonString.getRoom_name());
-		NewTeamReturn resultString = teamService.registerTeam(jsonString, activeQuiz(quizzes));
+		Team resultString = teamService.registerTeam(jsonString, activeQuiz(quizzes));
 		return resultString;
 	}
 	

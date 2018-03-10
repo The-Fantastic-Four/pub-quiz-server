@@ -8,10 +8,10 @@ package is.hi.hbv601.pubquiz.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import is.hi.hbv601.pubquiz.model.NewTeamReturn;
+import is.hi.hbv601.pubquiz.model.Team;
 import is.hi.hbv601.pubquiz.model.Quiz;
 
-public interface TeamRepository extends JpaRepository<NewTeamReturn, Long>{
+public interface TeamRepository extends JpaRepository<Team, Long>{
 	
 	/**
 	 * Save a team to the repository.
@@ -20,7 +20,7 @@ public interface TeamRepository extends JpaRepository<NewTeamReturn, Long>{
 	 *            The team to be saved.
 	 */
 	@SuppressWarnings("unchecked")
-	NewTeamReturn save(NewTeamReturn t);
+	Team save(Team t);
 
 	/**
 	 * Searches if the exact same phoneId exists.

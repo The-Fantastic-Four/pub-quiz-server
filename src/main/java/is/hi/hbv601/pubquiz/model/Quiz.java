@@ -63,7 +63,7 @@ public class Quiz
 	private List<Question> questions;
 	
 	@OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
-	private Set<NewTeamReturn> teams;
+	private Set<Team> teams;
 
 	private int currentQuestionNumber;
 	
@@ -151,15 +151,15 @@ public class Quiz
 			this.currentQuestionNumber++;
 	}
 	
-	public Set<NewTeamReturn> getTeams()
+	public Set<Team> getTeams()
 	{
 		return teams;
 	}
 
-	public void addTeam(NewTeamReturn team)
+	public void addTeam(Team team)
 	{
 		if (teams == null)
-			teams = new HashSet<NewTeamReturn>();
+			teams = new HashSet<Team>();
 
 		teams.add(team);
 	}

@@ -10,9 +10,9 @@ package is.hi.hbv601.pubquiz.service.interfaces;
 
 import java.nio.file.AccessDeniedException;
 
-import is.hi.hbv601.pubquiz.model.NewTeamReturn;
-import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.model.Team;
+import is.hi.hbv601.pubquiz.model.Quiz;
+import is.hi.hbv601.pubquiz.model.ReceivedTeam;
 
 public interface TeamServiceInt
 {
@@ -24,7 +24,7 @@ public interface TeamServiceInt
 	 *            The team to register.
 	 * @return A more detailed team object.
 	 */
-	public NewTeamReturn registerTeam(Team t, Quiz q) throws AccessDeniedException;
+	public Team registerTeam(ReceivedTeam t, Quiz q) throws AccessDeniedException;
 	
 	/**
 	 * Checks whether the phoneId exists within given quiz.

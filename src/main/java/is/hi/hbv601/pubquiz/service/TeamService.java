@@ -12,9 +12,9 @@ import java.nio.file.AccessDeniedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import is.hi.hbv601.pubquiz.model.NewTeamReturn;
-import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.model.Team;
+import is.hi.hbv601.pubquiz.model.Quiz;
+import is.hi.hbv601.pubquiz.model.ReceivedTeam;
 import is.hi.hbv601.pubquiz.repository.QuizRepository;
 import is.hi.hbv601.pubquiz.repository.TeamRepository;
 import is.hi.hbv601.pubquiz.service.interfaces.TeamServiceInt;
@@ -28,7 +28,7 @@ public class TeamService implements TeamServiceInt
 	@Autowired 
 	QuizRepository quizRepository;
 	
-	public NewTeamReturn registerTeam(Team t, Quiz q) throws AccessDeniedException
+	public Team registerTeam(ReceivedTeam t, Quiz q) throws AccessDeniedException
 	{
 		boolean exists = teamExists(t, q);
 		if (exists)
@@ -36,7 +36,7 @@ public class TeamService implements TeamServiceInt
 			throw new AccessDeniedException("This team already exists for this quiz.");
 		}
 
-		NewTeamReturn registeredTeam = createRegisteredTeam(t, q);
+		Team registeredTeam = createRegisteredTeam(t, q);
 		saveData(registeredTeam, q);
 		
 		return registeredTeam;
@@ -49,9 +49,9 @@ public class TeamService implements TeamServiceInt
 	 *            The team to be checked for.
 	 * @return true if team exists; false if team doesn't exist.
 	 */
-	private boolean teamExists(Team t, Quiz q)
+	private boolean teamExists(ReceivedTeam t, Quiz q)
 	{
-		for(NewTeamReturn team : q.getTeams()) {
+		for(Team team : q.getTeams()) {
 			if(t.getTeam_name().equals(team.getTeam_name()))
 				return true;
 		}
@@ -64,7 +64,7 @@ public class TeamService implements TeamServiceInt
 	 * @param data
 	 *            The data to be saved.
 	 */
-	private void saveData(NewTeamReturn t, Quiz q)
+	private void saveData(Team t, Quiz q)
 	{
 		teamRepository.save(t);
 		q.addTeam(t);
@@ -75,12 +75,12 @@ public class TeamService implements TeamServiceInt
 	 * Creates a model for the team that's to be registered for the quiz.
 	 * 
 	 * @param t
-	 *            Team to be registered.
+	 *            ReceivedTeam to be registered.
 	 * @return More detailed model for given team.
 	 */
-	private NewTeamReturn createRegisteredTeam(Team t, Quiz q)
+	private Team createRegisteredTeam(ReceivedTeam t, Quiz q)
 	{
-		return new NewTeamReturn(t.getTeam_name(), q, t.getPhone_id());
+		return new Team(t.getTeam_name(), q, t.getPhone_id());
 	}
 
 	
