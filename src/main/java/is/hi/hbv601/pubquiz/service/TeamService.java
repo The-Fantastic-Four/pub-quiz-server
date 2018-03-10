@@ -2,16 +2,15 @@
  * TeamService is an implementation of the TeamServiceInt
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
- * @date 4. mar. 2018
+ * @date 10. mar. 2018
  */
 
 package is.hi.hbv601.pubquiz.service;
 
+import java.nio.file.AccessDeniedException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import is.hi.hbv601.pubquiz.model.NewTeamReturn;
 import is.hi.hbv601.pubquiz.model.Quiz;
@@ -29,35 +28,18 @@ public class TeamService implements TeamServiceInt
 	@Autowired 
 	QuizRepository quizRepository;
 	
-	public String registerTeam(Team t, Quiz q)
+	public NewTeamReturn registerTeam(Team t, Quiz q) throws AccessDeniedException
 	{
-		String jsonString = "";
 		boolean exists = teamExists(t, q);
 		if (exists)
 		{
-			return jsonString;
+			throw new AccessDeniedException("This team already exists for this quiz.");
 		}
 
 		NewTeamReturn registeredTeam = createRegisteredTeam(t, q);
 		saveData(registeredTeam, q);
 		
-		//TODO: Consider how to tackle this, do we need to send JSON back?
-		//It fails the conversion now due to the fact that the NewTeamReturn contains and 
-		//object as a variable. Easily fixable with a new model class but do we need it?
-		//Discuss.
-		
-		/*try
-		{
-			System.out.println("Also to here.");
-			jsonString = convertToJsonString(registeredTeam);
-		}
-		catch (JsonProcessingException e)
-		{
-			// TODO: Consider how to handle if the JSON string conversion fails
-			e.printStackTrace();
-		}*/
-
-		return jsonString;
+		return registeredTeam;
 	}
 
 	/**
@@ -101,19 +83,6 @@ public class TeamService implements TeamServiceInt
 		return new NewTeamReturn(t.getTeam_name(), q, t.getPhone_id());
 	}
 
-	/**
-	 * Converts given NewTeamReturn object to JSON string.
-	 * 
-	 * @param t
-	 *            The NewTeamReturn object to be converted.
-	 * @return JSON String that corresponds to given object information.
-	 * @throws JsonProcessingException
-	 */
-	private String convertToJsonString(NewTeamReturn t) throws JsonProcessingException
-	{
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writeValueAsString(t);
-	}
 	
 	public boolean doesPhoneIdExistForQuiz(String phoneId, Quiz q) 
 	{

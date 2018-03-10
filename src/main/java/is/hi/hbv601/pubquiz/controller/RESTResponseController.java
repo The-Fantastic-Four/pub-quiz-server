@@ -2,7 +2,7 @@
  * RESTResponseController reacts to JSON requests.
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
- * @date 4. mar. 2018
+ * @date 10. mar. 2018
  */
 
 package is.hi.hbv601.pubquiz.controller;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import is.hi.hbv601.pubquiz.model.FetchQuestionWrapper;
+import is.hi.hbv601.pubquiz.model.NewTeamReturn;
 import is.hi.hbv601.pubquiz.model.Question;
 import is.hi.hbv601.pubquiz.model.Quiz;
 import is.hi.hbv601.pubquiz.model.ReceivedAnswer;
@@ -88,21 +89,15 @@ public class RESTResponseController
 	 * 
 	 * @param jsonString
 	 *            The JSON string received.
-	 * @return HTTP status of 201 if successful and a relevant JSON object, 403 if
-	 *         the team already exists.
+	 * @return A more detailed team object.
+	 * @throws AccessDeniedException 
 	 */
 	@RequestMapping(value = "/api/register_team", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody ResponseEntity<?> registerTeam(@RequestBody Team jsonString)
+	public @ResponseBody NewTeamReturn registerTeam(@RequestBody Team jsonString) throws AccessDeniedException
 	{
 		List<Quiz> quizzes = quizService.findByRoomName(jsonString.getRoom_name());
-		String resultString = teamService.registerTeam(jsonString, activeQuiz(quizzes));
-		
-		if (resultString.isEmpty())
-		{
-			return new ResponseEntity<HttpStatus>(HttpStatus.FORBIDDEN);
-		}
-		System.out.println(resultString);
-		return new ResponseEntity<String>(resultString, HttpStatus.CREATED);
+		NewTeamReturn resultString = teamService.registerTeam(jsonString, activeQuiz(quizzes));
+		return resultString;
 	}
 	
 	/**
