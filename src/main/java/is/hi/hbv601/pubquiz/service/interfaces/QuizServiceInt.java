@@ -74,4 +74,12 @@ public interface QuizServiceInt
 	 * @return List of all published quizzes.
 	 */
 	public List<Quiz> findPublished();
+	
+	/**
+	 * Checks whether there is an already active quiz with the given room name.
+	 * 
+	 * @param quiz The new quiz that is being created.
+	 * @return true if there is a time intersect; false if not.
+	 */
+	public boolean timeIntersect(Quiz quiz);
 }

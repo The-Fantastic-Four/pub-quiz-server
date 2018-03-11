@@ -3,11 +3,10 @@
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
  * @author Viktor Alex Brynjarsson vab18@hi.is
- * @date 22. feb. 2018
+ * @date 11. mar. 2018
  */
 package is.hi.hbv601.pubquiz.controller;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,6 +56,7 @@ public class QuizController
 		Host host = hostService.findHostByEmail(authentication.getName());
 		model.addAttribute("quizzes", host.getQuizzes());
 		model.addAttribute("publishedQuizzes", quizService.findPublished());
+		model.addAttribute("quizVal", new Quiz());
 		
 		return new ModelAndView("quiz/index");
 	}
@@ -311,26 +310,24 @@ public class QuizController
 	 * @throws NotFoundException
 	 */
 	@RequestMapping(value = "/addExistingQuiz", method = RequestMethod.POST)
-	public ModelAndView addExistingQuiz(long publishedQuizId, String startTime, int duration, Model model, 
+	public ModelAndView addExistingQuiz(@Valid @ModelAttribute("quizVal") Quiz quiz, BindingResult errors, Model model, 
 			Authentication authentication) throws NotFoundException
 	{
-		
-		if (StringUtils.countOccurrencesOf(startTime, ":") == 1) {
-			startTime += ":00";
-		}
-		Timestamp newStartTimeString = Timestamp.valueOf(startTime.replace("T", " "));
-		
-		System.out.println(publishedQuizId);
-		System.out.println(newStartTimeString);
-		System.out.println(duration);
-		
 		Host host = hostService.findHostByEmail(authentication.getName());
-		Quiz originalQuiz = quizService.findQuizById(publishedQuizId);
+		
+		if (errors.hasErrors())
+		{
+			model.addAttribute("quizzes", host.getQuizzes());
+			model.addAttribute("publishedQuizzes", quizService.findPublished());
+			return new ModelAndView("quiz/index");
+		}
+
+		Quiz originalQuiz = quizService.findQuizById(quiz.getId());
 		
 		Quiz newQuiz = new Quiz();
-		newQuiz.setRoomName(originalQuiz.getRoomName()+"By"+originalQuiz.getHost().getName());
-		newQuiz.setDuration(duration);
-		newQuiz.setStartTime(newStartTimeString);
+		newQuiz.setRoomName(quiz.getRoomName().trim());
+		newQuiz.setDuration(quiz.getDuration());
+		newQuiz.setStartTime(quiz.getStartTime());
 		for(Question question : originalQuiz.getQuestions()) {
 			newQuiz.addQuestion(question);
 		}
@@ -338,9 +335,16 @@ public class QuizController
 		newQuiz.setIsDuplicate(true);
 		newQuiz.setIsPublished(false);
 		
-		System.out.println("before");
+		if(quizService.timeIntersect(newQuiz))
+		{
+			model.addAttribute("quizzes", host.getQuizzes());
+			model.addAttribute("publishedQuizzes", quizService.findPublished());
+			//Custom error for when there is a quiz active within given time period with the same room name.
+			model.addAttribute("activeQuiz", "Það er quiz með þessu nafni í gangi sem skarast á þetta tímabil.");
+			return new ModelAndView("quiz/index");
+		}
+		
 		quizService.saveQuiz(newQuiz, host);
-		System.out.println("after");
 		
 		return new ModelAndView("redirect:/quiz/");
 	}
