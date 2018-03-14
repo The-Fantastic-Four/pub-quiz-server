@@ -25,6 +25,7 @@
 					<td th:text="${quiz.startTime}">2004</td>
 					<td th:text="${quiz.duration}">24</td>
 					<td th:text="${#lists.size(quiz.questions)}">0</td>
+					<td th:if="${not quiz.isPublished and not quiz.isDuplicate}"><a th:href="@{'/quiz/' + ${quiz.id} + '/publishQuiz'}">Gefa út</a></td>
 					<td>
 						<form action="#" th:action="@{'/quiz/' + ${quiz.id}}" th:method="delete">
 							<button type="submit">Eyða</button>
@@ -33,6 +34,39 @@
 				</tr>
 			</tbody>
 		</table>
+		
+		<hr />
+		<form th:if="${not publishedQuizzes.isEmpty()}" th:object="${quizVal}" th:action="@{'/quiz/addExistingQuiz'}"
+			method="post">
+			<input type="hidden" th:field="*{currentQuestionNumber}" />
+			<input type="hidden" th:field="*{isDuplicate}" />
+			<input type="hidden" th:field="*{isPublished}" />
+				
+			<label for="publishedQuizId">Bæta Quiz við: </label> 
+			<select name="publishedQuizId" th:field="*{id}">
+				<optgroup label="Quizbankinn">
+					<th:block th:each="quiz : ${publishedQuizzes}">
+						<option th:value="${quiz.id}" th:text="${quiz.roomName}"></option>
+					</th:block>
+				</optgroup>
+			</select>
+			
+			<label for="roomName">Skráningarheiti: </label>
+			<input type="text" th:field="*{roomName}" />
+			<span style="color:red; font-style: italic" th:if="${#fields.hasErrors('roomName')}" th:errors="*{roomName}"></span>
+			<span style="color:red; font-style: italic" th:if="${activeQuiz != null}" th:text="${activeQuiz}"></span>
+			
+			<label for="startTime">Upphafstími: </label>
+			<input name="startTime" type="datetime-local" th:field="*{startTime}"/>
+			<span style="color:red; font-style: italic" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}"></span>
+			
+			<label for="duration">Tímalengd: </label>
+			<input name="duration" type="number" th:field="*{duration}"/>
+			<span style="color:red; font-style: italic" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></span>
+			
+			<button type="submit">Bæta við</button>
+		</form>
+		
 		<a href="/quiz/new">Nýtt quiz</a>
 	</body>
 </html>

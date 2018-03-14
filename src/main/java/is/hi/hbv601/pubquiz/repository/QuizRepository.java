@@ -57,4 +57,10 @@ public interface QuizRepository extends JpaRepository<Quiz, Long>
 	 * @return List of all quizzes that have given room name.
 	 */
 	List<Quiz> findAllByRoomName(String roomName);
+	
+	/**
+	 * Finds all quizzes that are publicly available for duplication.
+	 * @return List of all published quizzes.
+	 */
+	List<Quiz> findAllByIsPublishedTrue();
 }

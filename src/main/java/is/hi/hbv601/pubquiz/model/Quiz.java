@@ -46,7 +46,7 @@ public class Quiz
 	 * Identifier used by contestants to join this quiz
 	 */
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
-	@Size(min = 1, max = 35, message = "Lengd nafns þarf að vera á bilinu 1-35")
+	@Size(min = 1, max = 35, message = "Lengd nafns þarf að vera á bilinu 1-35.")
 	private String roomName;
 
 	@NotNull(message = "Þessi reitur má ekki vera tómur.")
@@ -71,6 +71,10 @@ public class Quiz
 	@JoinColumn(name = "host_id")
 	private Host host;
 
+	private boolean isPublished;
+	
+	private boolean isDuplicate;
+	
 	public Quiz()
 	{
 		currentQuestionNumber = 0;
@@ -163,4 +167,24 @@ public class Quiz
 
 		teams.add(team);
 	}
+
+	public boolean getIsPublished() 
+	{
+		return isPublished;
+	}
+
+	public void setIsPublished(boolean isPublished) 
+	{
+		this.isPublished = isPublished;
+	}
+	
+	public boolean getIsDuplicate() {
+		return isDuplicate;
+	}
+	
+	public void setIsDuplicate(boolean isDuplicate)
+	{
+		this.isDuplicate = isDuplicate;
+	}
+	
 }

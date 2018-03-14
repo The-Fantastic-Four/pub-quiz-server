@@ -3,7 +3,7 @@
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
  * @author Viktor Alex Brynjarsson vab18@hi.is
- * @date 22. feb. 2018
+ * @date 11. mar. 2018
  */
 package is.hi.hbv601.pubquiz.controller;
 
@@ -55,7 +55,9 @@ public class QuizController
 	{
 		Host host = hostService.findHostByEmail(authentication.getName());
 		model.addAttribute("quizzes", host.getQuizzes());
-
+		model.addAttribute("publishedQuizzes", quizService.findPublished());
+		model.addAttribute("quizVal", new Quiz());
+		
 		return new ModelAndView("quiz/index");
 	}
 
@@ -256,7 +258,7 @@ public class QuizController
 	 * 
 	 * @param quizId The Id of the quiz in question.
 	 * @param model
-	 * @param authentication The authentication class
+	 * @param authentication The authentication class.
 	 * @return Incrementation of the current question counter within the quiz and a return to the quiz display.
 	 * @throws NotFoundException
 	 */
@@ -272,4 +274,79 @@ public class QuizController
 		
 		return new ModelAndView("redirect:/quiz/"+ quizId);
 	}
+	
+	/**
+	 * Publishes the quiz so others can use it as a predefined quiz.
+	 * 
+	 * @param quizId The id of the quiz in question.
+	 * @param model
+	 * @param authentication The authentication class.
+	 * @return The list of quizzes view.
+	 * @throws NotFoundException
+	 */
+	@RequestMapping(value = "/{quizId}/publishQuiz", method = RequestMethod.GET)
+	public ModelAndView publishQuiz(@PathVariable(value = "quizId") long quizId, Model model, 
+			Authentication authentication) throws NotFoundException
+	{
+		Host host = hostService.findHostByEmail(authentication.getName());
+		Quiz quiz = quizService.findQuiz(quizId, host);
+		
+		quiz.setIsPublished(true);
+		quizService.saveQuiz(quiz, host);		
+		
+		model.addAttribute("quizzes", host.getQuizzes());
+		model.addAttribute("publishedQuizzes", quizService.findPublished());
+		
+		return new ModelAndView("redirect:/quiz/");
+	}
+	
+	/**
+	 * Adds an existing quiz to list of own quizzes to host.
+	 * 
+	 * @param publishedQuizId The id of the quiz to be added.
+	 * @param model
+	 * @param authentication The authentication object.
+	 * @return The list of quizzes view.
+	 * @throws NotFoundException
+	 */
+	@RequestMapping(value = "/addExistingQuiz", method = RequestMethod.POST)
+	public ModelAndView addExistingQuiz(@Valid @ModelAttribute("quizVal") Quiz quiz, BindingResult errors, Model model, 
+			Authentication authentication) throws NotFoundException
+	{
+		Host host = hostService.findHostByEmail(authentication.getName());
+		
+		if (errors.hasErrors())
+		{
+			model.addAttribute("quizzes", host.getQuizzes());
+			model.addAttribute("publishedQuizzes", quizService.findPublished());
+			return new ModelAndView("quiz/index");
+		}
+
+		Quiz originalQuiz = quizService.findQuizById(quiz.getId());
+		
+		Quiz newQuiz = new Quiz();
+		newQuiz.setRoomName(quiz.getRoomName().trim());
+		newQuiz.setDuration(quiz.getDuration());
+		newQuiz.setStartTime(quiz.getStartTime());
+		for(Question question : originalQuiz.getQuestions()) {
+			newQuiz.addQuestion(question);
+		}
+		newQuiz.setHost(host);
+		newQuiz.setIsDuplicate(true);
+		newQuiz.setIsPublished(false);
+		
+		if(quizService.timeIntersect(newQuiz))
+		{
+			model.addAttribute("quizzes", host.getQuizzes());
+			model.addAttribute("publishedQuizzes", quizService.findPublished());
+			//Custom error for when there is a quiz active within given time period with the same room name.
+			model.addAttribute("activeQuiz", "Það er quiz með þessu nafni í gangi sem skarast á þetta tímabil.");
+			return new ModelAndView("quiz/index");
+		}
+		
+		quizService.saveQuiz(newQuiz, host);
+		
+		return new ModelAndView("redirect:/quiz/");
+	}
+	
 }

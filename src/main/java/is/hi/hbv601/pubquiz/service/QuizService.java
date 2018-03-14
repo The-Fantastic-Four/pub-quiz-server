@@ -2,10 +2,12 @@
  * Service for getting, and deleting quizzes
  * 
  * @author Viktor Alex Brynjarsson vab18@hi.is
- * @date 13. feb. 2017
+ * @author Eiður Örn Gunnarsson eog26@hi.is
+ * @date 11. mar. 2018
  */
 package is.hi.hbv601.pubquiz.service;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,4 +104,39 @@ public class QuizService implements QuizServiceInt
 		return quizRepository.findAllByRoomName(roomName);
 	}
 	
+	@Override
+	public List<Quiz> findPublished()
+	{
+		return quizRepository.findAllByIsPublishedTrue();
+	}
+	
+	@Override
+	public boolean timeIntersect(Quiz quiz)
+	{
+		List<Quiz> quizList = findByRoomName(quiz.getRoomName());
+		
+		//The starting time for the new quiz in calendar form.
+		Calendar newStart = Calendar.getInstance();
+		newStart.setTime(quiz.getStartTime());
+		
+		//The ending time for the new quiz in calendar form.
+		Calendar newEnd = Calendar.getInstance();
+		newEnd.setTime(quiz.getStartTime());
+		newEnd.add(Calendar.HOUR_OF_DAY, quiz.getDuration());
+		
+		for(Quiz q : quizList) {
+			//The starting time for an existing quiz in calendar form.
+			Calendar existingStart = Calendar.getInstance();
+			existingStart.setTime(q.getStartTime());
+			
+			//The ending time for an existing quiz in calendar form.
+			Calendar existingEnd = Calendar.getInstance();
+			existingEnd.setTime(q.getStartTime());
+			existingEnd.add(Calendar.HOUR_OF_DAY, q.getDuration());
+			
+			if(existingStart.before(newEnd) && existingEnd.after(newStart))
+				return true;
+		}
+		return false;
+	}
 }

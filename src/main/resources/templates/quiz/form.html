@@ -10,6 +10,7 @@
 		<form action="#" th:action="@{/quiz/new}" th:object="${quiz}" method="post">
 			<input type="hidden" th:field="*{id}" />
 			<input type="hidden" th:field="*{currentQuestionNumber}" />
+			<input type="hidden" th:field="*{isDuplicate}" />
 			<div>
 				<label for="roomName">Skráningarheiti</label>
 				<input type="text" th:field="*{roomName}" />
@@ -21,6 +22,13 @@
 			<div>
 				<label for="duration">Tímalengd</label>
 				<input type="number" th:field="*{duration}" />
+			</div>
+			<div>
+				<label for="isPublished">Gefa út fyrir aðra</label>
+				<select th:field="*{isPublished}">
+					<option value="true">Já</option>
+					<option value="false" selected="selected">Nei</option>
+				</select>
 			</div>
 			<div>
 				<input type="submit" value="Vista" />
