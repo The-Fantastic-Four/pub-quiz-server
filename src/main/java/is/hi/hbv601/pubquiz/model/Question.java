@@ -37,8 +37,6 @@ public class Question
 
 	private long question_number;
 
-	private long total_questions;
-
 	private String question_type;
 
 	private boolean isPrivate = true;
@@ -54,13 +52,10 @@ public class Question
 	{
 	}
 
-	public Question(long id, String question, long question_number, long total_questions, String question_type,
-			boolean isPrivate)
+	public Question(String question, long question_number, String question_type, boolean isPrivate)
 	{
-		this.id = id;
 		this.question = question;
 		this.question_number = question_number;
-		this.total_questions = total_questions;
 		this.question_type = question_type;
 		this.isPrivate = isPrivate;
 	}
@@ -93,16 +88,6 @@ public class Question
 	public void setQuestion_number(long question_number)
 	{
 		this.question_number = question_number;
-	}
-
-	public long getTotal_questions()
-	{
-		return total_questions;
-	}
-
-	public void setTotal_questions(long total_questions)
-	{
-		this.total_questions = total_questions;
 	}
 
 	public String getQuestion_type()

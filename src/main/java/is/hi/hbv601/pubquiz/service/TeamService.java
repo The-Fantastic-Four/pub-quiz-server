@@ -2,46 +2,44 @@
  * TeamService is an implementation of the TeamServiceInt
  * 
  * @author Eiður Örn Gunnarsson eog26@hi.is
- * @date 11. feb. 2018
+ * @date 10. mar. 2018
  */
 
 package is.hi.hbv601.pubquiz.service;
 
+import java.nio.file.AccessDeniedException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import is.hi.hbv601.pubquiz.model.NewTeamReturn;
 import is.hi.hbv601.pubquiz.model.Team;
+import is.hi.hbv601.pubquiz.model.Quiz;
+import is.hi.hbv601.pubquiz.model.ReceivedTeam;
+import is.hi.hbv601.pubquiz.repository.QuizRepository;
+import is.hi.hbv601.pubquiz.repository.TeamRepository;
 import is.hi.hbv601.pubquiz.service.interfaces.TeamServiceInt;
 
 @Service
 public class TeamService implements TeamServiceInt
 {
-	public String registerTeam(Team t)
+	@Autowired
+	TeamRepository teamRepository;
+	
+	@Autowired 
+	QuizRepository quizRepository;
+	
+	public Team registerTeam(ReceivedTeam t, Quiz q) throws AccessDeniedException
 	{
-		String jsonString = "";
-		boolean exists = teamExists(t);
+		boolean exists = teamExists(t, q);
 		if (exists)
 		{
-			return jsonString;
+			throw new AccessDeniedException("This team already exists for this quiz.");
 		}
 
-		NewTeamReturn registeredTeam = createRegisteredTeam(t);
-		saveData(registeredTeam);
-
-		try
-		{
-			jsonString = convertToJsonString(registeredTeam);
-		}
-		catch (JsonProcessingException e)
-		{
-			// TODO: Consider how to handle if the JSON string conversion fails
-			e.printStackTrace();
-		}
-
-		return jsonString;
+		Team registeredTeam = createRegisteredTeam(t, q);
+		saveData(registeredTeam, q);
+		
+		return registeredTeam;
 	}
 
 	/**
@@ -51,9 +49,12 @@ public class TeamService implements TeamServiceInt
 	 *            The team to be checked for.
 	 * @return true if team exists; false if team doesn't exist.
 	 */
-	private boolean teamExists(Team t)
+	private boolean teamExists(ReceivedTeam t, Quiz q)
 	{
-		// TODO: Check if team exists.
+		for(Team team : q.getTeams()) {
+			if(t.getTeam_name().equals(team.getTeam_name()))
+				return true;
+		}
 		return false;
 	}
 
@@ -63,39 +64,28 @@ public class TeamService implements TeamServiceInt
 	 * @param data
 	 *            The data to be saved.
 	 */
-	private void saveData(NewTeamReturn t)
+	private void saveData(Team t, Quiz q)
 	{
-		// TODO: Save into database.
-		System.out.println("====================");
-		System.out.println(t.getTeam_name());
-		System.out.println("Registering team in DB");
-		System.out.println("====================");
+		teamRepository.save(t);
+		q.addTeam(t);
+		quizRepository.save(q);
 	}
 
 	/**
 	 * Creates a model for the team that's to be registered for the quiz.
 	 * 
 	 * @param t
-	 *            Team to be registered.
+	 *            ReceivedTeam to be registered.
 	 * @return More detailed model for given team.
 	 */
-	private NewTeamReturn createRegisteredTeam(Team t)
+	private Team createRegisteredTeam(ReceivedTeam t, Quiz q)
 	{
-		// TODO: Get required data from database and fill in.
-		return new NewTeamReturn(103, "Tveir á kantinum", 60, "eede877b-7741-4dec-a6a4-3b7d9b06bc5c");
+		return new Team(t.getTeam_name(), q, t.getPhone_id());
 	}
 
-	/**
-	 * Converts given NewTeamReturn object to JSON string.
-	 * 
-	 * @param t
-	 *            The NewTeamReturn object to be converted.
-	 * @return JSON String that corresponds to given object information.
-	 * @throws JsonProcessingException
-	 */
-	private String convertToJsonString(NewTeamReturn t) throws JsonProcessingException
+	
+	public boolean doesPhoneIdExistForQuiz(String phoneId, Quiz q) 
 	{
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writeValueAsString(t);
+		return teamRepository.countByPhoneIdAndQuiz(phoneId, q) > 0;
 	}
 }

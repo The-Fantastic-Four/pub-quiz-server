@@ -50,4 +50,11 @@ public interface QuizRepository extends JpaRepository<Quiz, Long>
 	 */
 	@Transactional
 	Long deleteById(Long id);
+	
+	/**
+	 * Finds all quizzes with the given room name.
+	 * @param roomName Is the name to be looked for.
+	 * @return List of all quizzes that have given room name.
+	 */
+	List<Quiz> findAllByRoomName(String roomName);
 }

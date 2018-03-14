@@ -2,14 +2,17 @@
  * Represents a quiz
  * 
  * @author Viktor Alex Brynjarsson vab18@hi.is
- * @date 13. feb. 2018
+ * @date 3. march. 2018
  */
 package is.hi.hbv601.pubquiz.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -56,15 +60,20 @@ public class Quiz
 	@JoinTable(name = "quiz_question", joinColumns = { @JoinColumn(name = "quiz_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "question_id") })
 	@OrderBy("question_number ASC")
-	private Set<Question> questions;
+	private List<Question> questions;
+	
+	@OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
+	private Set<Team> teams;
 
+	private int currentQuestionNumber;
+	
 	@ManyToOne
 	@JoinColumn(name = "host_id")
 	private Host host;
 
 	public Quiz()
 	{
-
+		currentQuestionNumber = 0;
 	}
 
 	public long getId()
@@ -107,7 +116,7 @@ public class Quiz
 		this.duration = duration;
 	}
 
-	public Set<Question> getQuestions()
+	public List<Question> getQuestions()
 	{
 		return questions;
 	}
@@ -115,7 +124,7 @@ public class Quiz
 	public void addQuestion(Question question)
 	{
 		if (questions == null)
-			questions = new HashSet<Question>();
+			questions = new ArrayList<Question>();
 
 		questions.add(question);
 	}
@@ -128,5 +137,30 @@ public class Quiz
 	public void setHost(Host host)
 	{
 		this.host = host;
+	}
+
+	public int getCurrentQuestionNumber() {
+		return currentQuestionNumber;
+	}
+
+	/**
+	 * Increments the currentQuestionNumber
+	 */
+	public void incrementCurrentQuestionNumber() {
+		if(questions.size() > currentQuestionNumber)
+			this.currentQuestionNumber++;
+	}
+	
+	public Set<Team> getTeams()
+	{
+		return teams;
+	}
+
+	public void addTeam(Team team)
+	{
+		if (teams == null)
+			teams = new HashSet<Team>();
+
+		teams.add(team);
 	}
 }

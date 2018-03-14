@@ -9,7 +9,7 @@
 		<h1>New Quiz</h1>
 		<form action="#" th:action="@{'/quiz/' + ${quiz.id} + '/addQuestion'}" th:object="${newQuestion}" method="post">
 			<input type="hidden" th:field="*{id}" />
-			<input type="hidden" th:field="*{total_questions}" />
+			<!-- <input type="hidden" th:field="*{total_questions}" />  -->
 			<input type="hidden" th:field="*{question_number}" />
 			<input type="hidden" th:field="*{question_type}" />
 			<div>
